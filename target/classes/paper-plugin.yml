@@ -1,0 +1,4 @@
+name: SeaX
+version: '0.1'
+main: me.karlito.seax.SeaX
+api-version: '1.19'

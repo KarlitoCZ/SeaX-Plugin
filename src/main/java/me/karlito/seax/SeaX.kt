@@ -8,6 +8,6 @@ class SeaX : JavaPlugin() {
     }
 
     override fun onDisable() {
-        logger.info("The Seas Are Down")
+        logger.info("The Seas Are Down ")
     }
 }
