@@ -6,3 +6,5 @@ api-version: '1.19'
 commands:
   enderBow:
     description: Give players Ender Bow.
+  dash:
+    description: Push you forward.
