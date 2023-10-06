@@ -1,8 +1,8 @@
 name: SeaX
-version: '${project.version}'
+version: '0.1'
 main: me.karlito.seax.SeaX
 api-version: '1.19'
 
 commands:
-  ender-bow:
+  enderBow:
     description: Give players Ender Bow.
