@@ -4,5 +4,5 @@ main: me.karlito.seax.SeaX
 api-version: '1.19'
 
 commands:
-  enderbow:
+  ender-bow:
     description: Give players Ender Bow.

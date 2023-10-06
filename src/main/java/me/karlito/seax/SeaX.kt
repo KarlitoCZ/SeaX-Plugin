@@ -6,11 +6,11 @@ import org.bukkit.plugin.java.JavaPlugin
 class SeaX : JavaPlugin() {
     override fun onEnable() {
         logger.info("The Seas Are Now Safe")
-        registercommads()
+        registercommands()
     }
 
-    private fun registercommads() {
-        getCommand("enderbow")?.setExecutor(EnderBow())
+    private fun registercommands() {
+        getCommand("ender-bow")?.setExecutor(EnderBow())
         logger.info("Registered Commands")
     }
     override fun onDisable() {
