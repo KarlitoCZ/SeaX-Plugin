@@ -3,8 +3,11 @@ version: '${project.version}'
 main: me.karlito.seax.SeaX
 api-version: '1.19'
 
+
 commands:
   enderBow:
     description: Give players Ender Bow.
   dash:
     description: Push you forward.
+  testgui:
+    description: Test api with itemsadder.

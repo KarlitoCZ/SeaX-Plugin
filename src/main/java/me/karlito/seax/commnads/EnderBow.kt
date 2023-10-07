@@ -24,8 +24,10 @@ class EnderBow : CommandExecutor {
         }
         val enderBow : ItemStack = ItemStack(Material.BOW)
         val itemMeta = enderBow.itemMeta
+        val lore = itemMeta.lore ?: mutableListOf()
 
         itemMeta.displayName(Component.text("Ender Bow").color(TextColor.color(164, 46, 140)))
+        lore.add(Component.text("Test :rare:").toString())
         itemMeta.setCustomModelData(2936)
 
         enderBow.itemMeta = itemMeta

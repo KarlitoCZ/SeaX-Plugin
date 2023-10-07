@@ -2,6 +2,7 @@ package me.karlito.seax
 
 import me.karlito.seax.commnads.DashCommand
 import me.karlito.seax.commnads.EnderBow
+import me.karlito.seax.commnads.IaGui
 import org.bukkit.plugin.java.JavaPlugin
 
 class SeaX : JavaPlugin() {
@@ -20,6 +21,7 @@ class SeaX : JavaPlugin() {
     private fun registercommands() {
         getCommand("enderBow")?.setExecutor(EnderBow())
         getCommand("dash")?.setExecutor(DashCommand())
+        getCommand("testgui")?.setExecutor(IaGui())
 
         logger.info("Registered Commands")
     }
