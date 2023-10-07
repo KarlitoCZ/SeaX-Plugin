@@ -1,4 +1,4 @@
-package me.karlito.seax.commnads
+package me.karlito.seax.commands
 
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
@@ -17,7 +17,7 @@ class IaGui : CommandExecutor {
             val inventory = TexturedInventoryWrapper(
             null,
             54,
-            ChatColor.BLACK.toString() + "Test \nTest",
+            ChatColor.BLACK.toString() + "Test\nTest :img_cosmetic:",
             FontImageWrapper("_iainternal:blank_menu")
         )
 

@@ -1,8 +1,8 @@
 package me.karlito.seax
 
-import me.karlito.seax.commnads.DashCommand
-import me.karlito.seax.commnads.IaGui
-import me.karlito.seax.commnads.IronAxe
+import me.karlito.seax.commands.DashCommand
+import me.karlito.seax.commands.IaGui
+import me.karlito.seax.commands.IronAxe
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 

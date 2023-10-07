@@ -1,5 +1,6 @@
-package me.karlito.seax.commnads
+package me.karlito.seax.commands
 
+import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.ChatColor
@@ -26,11 +27,12 @@ class IronAxe : CommandExecutor {
         val enderBow : ItemStack = ItemStack(Material.IRON_AXE)
         val itemMeta = enderBow.itemMeta
 
-        if (itemMeta != null) {
-            itemMeta.lore = mutableListOf("${ChatColor.RED}${ChatColor.BOLD}This is a colored :cosmetic: \n %img_cosmetic%")
-            itemMeta.lore = mutableListOf("${ChatColor.LIGHT_PURPLE}${ChatColor.BOLD}%img_cosmetic%")
+        // Create formatted and multi-line lore
+        val loreLine1 = PlaceholderAPI.setPlaceholders(sender,"${ChatColor.RESET}${ChatColor.WHITE}%img_cosmetic%")
+        val loreLine2 = "${ChatColor.GOLD}This item is only a cosmetic."
 
-        }
+        // Add the lore lines to the item
+        itemMeta.lore = listOf(loreLine1, loreLine2)
 
         itemMeta.displayName(Component.text("Best Axe Ever").color(TextColor.color(164, 46, 140)))
         itemMeta.setCustomModelData(2936)
