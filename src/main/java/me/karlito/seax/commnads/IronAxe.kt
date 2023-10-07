@@ -1,5 +1,6 @@
 package me.karlito.seax.commnads
 
+import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Material
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 
-class EnderBow : CommandExecutor {
+class IronAxe : CommandExecutor {
     override fun onCommand(
         sender: CommandSender,
         command: Command,
@@ -22,13 +23,15 @@ class EnderBow : CommandExecutor {
             sender.sendMessage("Only players can use this command.")
             return true
         }
-        val enderBow : ItemStack = ItemStack(Material.BOW)
+        val enderBow : ItemStack = ItemStack(Material.IRON_AXE)
         val itemMeta = enderBow.itemMeta
-        val lore = itemMeta.lore ?: mutableListOf()
+        val lore = itemMeta.lore
+        val testtext = "Test Here %img_cosmetic%"
 
-        itemMeta.displayName(Component.text("Ender Bow").color(TextColor.color(164, 46, 140)))
-        lore.add(Component.text("Test :rare:").toString())
+        itemMeta.displayName(Component.text("Best Axe Ever").color(TextColor.color(164, 46, 140)))
         itemMeta.setCustomModelData(2936)
+
+
 
         enderBow.itemMeta = itemMeta
 

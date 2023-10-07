@@ -3,9 +3,11 @@ version: '0.1'
 main: me.karlito.seax.SeaX
 api-version: '1.19'
 
+# This sets PlaceholderAPI as an optional dependency for your plugin.
+softdepend: [PlaceholderAPI]
 
 commands:
-  enderBow:
+  IronAxe:
     description: Give players Ender Bow.
   dash:
     description: Push you forward.
