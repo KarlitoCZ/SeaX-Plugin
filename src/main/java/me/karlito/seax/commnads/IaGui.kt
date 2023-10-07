@@ -17,7 +17,7 @@ class IaGui : CommandExecutor {
             val inventory = TexturedInventoryWrapper(
             null,
             54,
-            ChatColor.BLACK.toString() + "Test",
+            ChatColor.BLACK.toString() + "Test \nTest",
             FontImageWrapper("_iainternal:blank_menu")
         )
 
