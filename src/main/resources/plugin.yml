@@ -13,3 +13,5 @@ commands:
     description: Push you forward.
   testgui:
     description: Test api with itemsadder.
+  defGui:
+    description: Test api with itemsadder but wrapper for def. inventory.

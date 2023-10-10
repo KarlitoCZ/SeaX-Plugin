@@ -1,6 +1,7 @@
 package me.karlito.seax
 
 import me.karlito.seax.commands.DashCommand
+import me.karlito.seax.commands.DefaultGuicmd
 import me.karlito.seax.commands.IaGui
 import me.karlito.seax.commands.IronAxe
 import org.bukkit.Bukkit
@@ -38,6 +39,7 @@ class SeaX : JavaPlugin() {
         getCommand("IronAxe")?.setExecutor(IronAxe())
         getCommand("dash")?.setExecutor(DashCommand())
         getCommand("testgui")?.setExecutor(IaGui())
+        getCommand("defGui")?.setExecutor(DefaultGuicmd())
 
         logger.info("Registered Commands")
     }
