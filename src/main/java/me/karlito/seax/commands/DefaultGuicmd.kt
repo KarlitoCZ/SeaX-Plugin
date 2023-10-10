@@ -2,6 +2,7 @@ package me.karlito.seax.commands
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
+import me.karlito.seax.SeaX
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -17,16 +18,17 @@ class DefaultGuicmd : CommandExecutor {
         if(sender !is Player) return false
 
         val defInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
-        val setitem = ItemStack(Material.MELON)
-        val setitemmeta = setitem.itemMeta
-        setitemmeta.displayName(Component.text("Super Melon"))
-
-        setitem.itemMeta = setitemmeta
-
-        defInventory.setItem(3, setitem)
-
-
         val texture = FontImageWrapper("_iainternal:red_gui");
+        val paper = ItemStack(Material.PAPER)
+        val papermeta = paper.itemMeta
+        papermeta.displayName(Component.text("Super Paper"))
+        papermeta.setCustomModelData(1788)
+
+        paper.itemMeta = papermeta
+
+        defInventory.setItem(6, paper)
+
+        SeaX.guiMap[sender.uniqueId] = defInventory
 
         sender.openInventory(defInventory)
         TexturedInventoryWrapper.setPlayerInventoryTexture(sender, texture)

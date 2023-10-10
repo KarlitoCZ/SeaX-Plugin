@@ -4,18 +4,25 @@ import me.karlito.seax.commands.DashCommand
 import me.karlito.seax.commands.DefaultGuicmd
 import me.karlito.seax.commands.IaGui
 import me.karlito.seax.commands.IronAxe
+import me.karlito.seax.listeners.InventoryClickListener
+import me.karlito.seax.listeners.InventoryCloseListener
 import org.bukkit.Bukkit
+import org.bukkit.inventory.Inventory
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.*
 
 class SeaX : JavaPlugin() {
 
     companion object {
+
+        val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
         var instance: SeaX? = null
             private set
     }
     override fun onEnable() {
         logger.info("The Seas Are Now Safe")
         registercommands()
+        registerlisteners()
         instance = this
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -35,6 +42,9 @@ class SeaX : JavaPlugin() {
     }
 
 
+
+
+
     private fun registercommands() {
         getCommand("IronAxe")?.setExecutor(IronAxe())
         getCommand("dash")?.setExecutor(DashCommand())
@@ -42,6 +52,13 @@ class SeaX : JavaPlugin() {
         getCommand("defGui")?.setExecutor(DefaultGuicmd())
 
         logger.info("Registered Commands")
+    }
+
+    private fun registerlisteners() {
+        Bukkit.getServer().pluginManager.registerEvents(InventoryCloseListener(), this)
+        Bukkit.getServer().pluginManager.registerEvents(InventoryClickListener(), this)
+
+        logger.info("Registered Event Listeners")
     }
     override fun onDisable() {
         logger.info("The Seas Are Down ")
