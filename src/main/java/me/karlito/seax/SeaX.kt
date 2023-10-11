@@ -4,6 +4,7 @@ import me.karlito.seax.commands.DashCommand
 import me.karlito.seax.commands.DefaultGuicmd
 import me.karlito.seax.commands.IaGui
 import me.karlito.seax.commands.IronAxe
+import me.karlito.seax.datastore.PersistentDataPlugin
 import me.karlito.seax.listeners.InventoryClickListener
 import me.karlito.seax.listeners.InventoryCloseListener
 import org.bukkit.Bukkit
@@ -13,17 +14,24 @@ import java.util.*
 
 class SeaX : JavaPlugin() {
 
-    companion object {
+    val plugin = this
 
+    fun getPlugin(): SeaX {
+        return plugin
+    }
+    companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
+
         var instance: SeaX? = null
             private set
     }
+
     override fun onEnable() {
         logger.info("The Seas Are Now Safe")
         registercommands()
         registerlisteners()
         instance = this
+
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             /*
@@ -31,18 +39,11 @@ class SeaX : JavaPlugin() {
              * Since all events are in the main class (this class), we simply use "this"
              */
         } else {
-            /*
-             * We inform about the fact that PlaceholderAPI isn't installed and then
-             * disable this plugin to prevent issues.
-             */
-            logger.info("Could not find PlaceholderAPI! This plugin is required.");
+            logger.info("Could not find PlaceholderAPI! This plugin is required.")
             Bukkit.getPluginManager().disablePlugin(this)
         }
 
     }
-
-
-
 
 
     private fun registercommands() {
@@ -50,6 +51,7 @@ class SeaX : JavaPlugin() {
         getCommand("dash")?.setExecutor(DashCommand())
         getCommand("testgui")?.setExecutor(IaGui())
         getCommand("defGui")?.setExecutor(DefaultGuicmd())
+        getCommand("money")!!.setExecutor(PersistentDataPlugin())
 
         logger.info("Registered Commands")
     }
