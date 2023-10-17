@@ -22,6 +22,7 @@ class IronAxe : CommandExecutor {
         // Check if the command sender is a player
         if (sender !is Player) {
             sender.sendMessage("Only players can use this command.")
+
             return true
         }
         val enderBow : ItemStack = ItemStack(Material.IRON_AXE)

@@ -15,5 +15,7 @@ commands:
     description: Test api with itemsadder.
   defGui:
     description: Test api with itemsadder but wraps the def. inventory.
-  mongo:
+  getcoins:
     description: Levels.
+  setcoins:
+      escription: Levels.
