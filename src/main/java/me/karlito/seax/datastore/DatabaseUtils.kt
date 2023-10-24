@@ -40,10 +40,8 @@ class DatabaseUtils {
 
 
         fun addPlayerData(player : Player) {
-            player.sendMessage("$connection")
             if (connection != null) {
             connection!!.prepareStatement("INSERT INTO players (uuid, username) VALUES (?, ?)").use { preparedStatement ->
-                player.sendMessage("TestX2") // TODO fix this shit null
                 preparedStatement.setString(1, player.uniqueId.toString())
                 preparedStatement.setString(2, player.name)
                 preparedStatement.executeUpdate()
