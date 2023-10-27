@@ -5,7 +5,6 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 
-// TODO fix this null shit
 class DatabaseUtils {
 
         companion object {
@@ -63,9 +62,6 @@ class DatabaseUtils {
         @Throws(SQLException::class)
         fun updatePlayerCoins(player: Player, coins: Int) {
             if (connection != null) {
-
-
-
             //if the player doesn't exist, add them
             if (!playerExists(player)) {
                 addPlayerData(player)

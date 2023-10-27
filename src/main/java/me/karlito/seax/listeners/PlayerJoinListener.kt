@@ -14,7 +14,6 @@ class PlayerJoinListener : Listener {
     @EventHandler
     @Throws(SQLException::class)
     fun inJoin(e: PlayerJoinEvent) {
-        DatabaseUtils().addPlayerData(e.player)
         //if the player is new, add them to the database
         if (!e.player.hasPlayedBefore()) {
             //add the player to the database
