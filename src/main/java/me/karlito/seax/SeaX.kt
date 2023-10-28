@@ -2,6 +2,7 @@ package me.karlito.seax
 
 import me.karlito.seax.commands.*
 import me.karlito.seax.datastore.DatabaseUtils
+import me.karlito.seax.gui.SMgui
 import me.karlito.seax.listeners.InventoryClickListener
 import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.PlayerJoinListener
@@ -57,7 +58,7 @@ class SeaX : JavaPlugin() {
         getCommand("IronAxe")?.setExecutor(IronAxe())
         getCommand("dash")?.setExecutor(DashCommand())
         getCommand("testgui")?.setExecutor(IaGui())
-        getCommand("defGui")?.setExecutor(DefaultGuicmd())
+        getCommand("defGui")?.setExecutor(SMgui())
         getCommand("getcoins")?.setExecutor(GetCoinsCommand())
         getCommand("setcoins")?.setExecutor(SetCoinsCommand())
 
