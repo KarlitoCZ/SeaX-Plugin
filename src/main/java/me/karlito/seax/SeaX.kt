@@ -3,6 +3,7 @@ package me.karlito.seax
 import me.karlito.seax.commands.*
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.gui.SMgui
+import me.karlito.seax.itemsystem.InteractEvent
 import me.karlito.seax.listeners.InventoryClickListener
 import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.PlayerJoinListener
@@ -69,6 +70,7 @@ class SeaX : JavaPlugin() {
         Bukkit.getServer().pluginManager.registerEvents(InventoryCloseListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(InventoryClickListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(PlayerJoinListener(), this)
+        Bukkit.getServer().pluginManager.registerEvents(InteractEvent(), this)
 
         logger.info("Registered Event Listeners")
     }

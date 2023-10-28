@@ -11,9 +11,10 @@ import java.sql.SQLException
 
 class SetCoinsCommand : CommandExecutor {
 
-    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>?): Boolean {
+    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
+
         if (sender is Player){
-            if (args?.size != 2) {
+            if (args.size != 2) {
                 sender.sendMessage("Provide arguments <player> <amount>")
                 return true
             }
@@ -43,6 +44,7 @@ class SetCoinsCommand : CommandExecutor {
 
 
         }
+
         return true
     }
 }

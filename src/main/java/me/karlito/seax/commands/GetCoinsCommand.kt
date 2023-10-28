@@ -10,11 +10,11 @@ import org.bukkit.entity.Player
 import java.sql.SQLException
 
 
-class GetCoinsCommand : CommandExecutor{
+class GetCoinsCommand : CommandExecutor {
 
-    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>?): Boolean {
+    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
         try {
-            if (args?.isEmpty() == true && sender is Player) {
+            if (args.isEmpty() == true && sender is Player) {
                 val coins: Int = DatabaseUtils().getPlayerCoins(sender)
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2☠&r&aYou have &e$coins&a coins!"))
                 return true

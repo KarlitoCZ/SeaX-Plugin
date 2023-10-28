@@ -104,7 +104,7 @@
         </repository>
         <repository>
             <id>nexus</id>
-            <name>Lumine Releases</name>
+            <name>Lumine Public</name>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
         <repository>
@@ -118,6 +118,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.3.5</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
@@ -139,6 +145,11 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ticxo.modelengine</groupId>
+            <artifactId>ModelEngine</artifactId>
+            <version>R4.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

@@ -11,11 +11,12 @@ import org.bukkit.entity.Player
 
 class IaGui : CommandExecutor {
 
-    override fun onCommand(sender: CommandSender, p1: Command, p2: String, p3: Array<out String>?): Boolean {
+    override fun onCommand(sender: CommandSender, p1: Command, p2: String, p3: Array<out String>): Boolean {
+
         if(sender !is Player) return false
 
 
-            val inventory = TexturedInventoryWrapper(
+        val inventory = TexturedInventoryWrapper(
             null,
             27,
             ChatColor.BLACK.toString() + "",
@@ -26,7 +27,8 @@ class IaGui : CommandExecutor {
 
 
         inventory.showInventory(sender)
-    return true
+
+        return true
     }
 
 }

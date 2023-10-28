@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class SMgui : CommandExecutor {
-    override fun onCommand(sender: CommandSender, p1: Command, p2: String, p3: Array<out String>?): Boolean {
+    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
 
         val smInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
