@@ -71,6 +71,7 @@ class SeaX : JavaPlugin() {
         Bukkit.getServer().pluginManager.registerEvents(InventoryClickListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(PlayerJoinListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(InteractEvent(), this)
+        //Bukkit.getServer().pluginManager.registerEvents(MythicSpawnListener(), this)
 
         logger.info("Registered Event Listeners")
     }

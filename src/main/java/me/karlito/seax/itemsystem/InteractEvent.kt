@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent
 
 class InteractEvent : Listener{
 
-    //val loot = Li("SunkenChest, Skull")
+    val lootArray = arrayOf("SunkenChest", "Skull") //that you can pick up USE MYTHIC-MOB NAME
 
     private val attachedEntities = mutableMapOf<String, Entity>()
 
@@ -21,7 +21,7 @@ class InteractEvent : Listener{
         val playerName = event.player.name
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
-        if (mythicMob != null && mythicMob.mobType == "SunkenChest") {
+        if (mythicMob != null && mythicMob.mobType in lootArray) {
             event.player.sendMessage("DETECTED")
             if (!attachedEntities.containsKey(playerName)) {
                 entity.teleport(player.location)

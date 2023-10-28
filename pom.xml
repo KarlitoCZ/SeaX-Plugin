@@ -149,7 +149,7 @@
         <dependency>
             <groupId>com.ticxo.modelengine</groupId>
             <artifactId>ModelEngine</artifactId>
-            <version>R4.0.3</version>
+            <version>R4.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
