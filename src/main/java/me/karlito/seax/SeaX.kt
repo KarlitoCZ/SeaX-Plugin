@@ -10,8 +10,11 @@ import me.karlito.seax.listeners.PlayerJoinListener
 import org.bukkit.Bukkit
 import org.bukkit.inventory.Inventory
 import org.bukkit.plugin.java.JavaPlugin
+import java.sql.Connection
+import java.sql.DriverManager
 import java.sql.SQLException
 import java.util.*
+
 
 class SeaX : JavaPlugin() {
 
@@ -20,26 +23,39 @@ class SeaX : JavaPlugin() {
     companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
 
-
+        var connection : Connection? = null
     }
 
-    var pointsDatabase: Unit? = null
+    //var pointsDatabase: Unit? = null
 
     override fun onEnable() {
         logger.info("The Seas Are Now Safe")
         registercommands()
         registerlisteners()
 
+
+        val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"
+        val user = "vjywbb4nphu4f81wxu5m"
+        val pass = "pscale_pw_ucxIORienh18agRsfgL7YnktYr8j69xRroStpQy7l5T"
+
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver")
+            connection = DriverManager.getConnection(url, user, pass)
 
-            if (!dataFolder.exists()){
-                dataFolder.mkdirs()
-            }
+            logger.warning("DATABASE $connection")
 
-            pointsDatabase = DatabaseUtils().pointDatabase(dataFolder.absolutePath + "/seax.db")
+            //if (!dataFolder.exists()){
+               // dataFolder.mkdirs()
+            //}
+
+            val statement = connection?.createStatement()
+            statement?.execute("CREATE TABLE IF NOT EXISTS players (uuid TEXT PRIMARY KEY, username TEXT NOT NULL, coins INTEGER NOT NULL DEFAULT 0);")
+            statement?.close()
+
+           //DatabaseUtils().pointDatabase()
 
         } catch (sqlException: Exception) {
-            println("Exception")
+            logger.warning("Exception $sqlException")
             Bukkit.getPluginManager().disablePlugin(this)
         }
 

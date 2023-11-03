@@ -3,6 +3,7 @@ package me.karlito.seax.gui
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
 import me.karlito.seax.SeaX
+import me.karlito.seax.SeaX.Companion.connection
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -43,6 +44,7 @@ class SMgui : CommandExecutor {
         smInventory.setItem(6, voyage1)
         smInventory.setItem(10, level)
 
+        sender.sendMessage("$connection")
 
         SeaX.guiMap[sender.uniqueId] = smInventory
 

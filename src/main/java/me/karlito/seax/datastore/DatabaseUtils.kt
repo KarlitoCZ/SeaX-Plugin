@@ -1,23 +1,14 @@
 package me.karlito.seax.datastore
 
+import me.karlito.seax.SeaX.Companion.connection
 import org.bukkit.entity.Player
-import java.sql.Connection
-import java.sql.DriverManager
 import java.sql.SQLException
 
 class DatabaseUtils {
 
-        companion object {
 
-            var connection: Connection? = null
+        fun pointDatabase() {
 
-        }
-
-
-
-        fun pointDatabase(path : String) {
-
-            connection = DriverManager.getConnection("jdbc:sqlite:" + path )
             //val connection = connection
             val statement = connection?.createStatement()
             statement?.execute("CREATE TABLE IF NOT EXISTS players (" +
@@ -25,8 +16,6 @@ class DatabaseUtils {
                     "username TEXT NOT NULL," +
                     "coins INTEGER NOT NULL DEFAULT 0)")
             statement?.close()
-
-
         }
 
     fun closeConnection() {
