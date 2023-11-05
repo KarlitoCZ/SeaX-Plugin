@@ -48,11 +48,7 @@ class SeaX : JavaPlugin() {
                // dataFolder.mkdirs()
             //}
 
-            val statement = connection?.createStatement()
-            statement?.execute("CREATE TABLE IF NOT EXISTS players (uuid TEXT PRIMARY KEY, username TEXT NOT NULL, coins INTEGER NOT NULL DEFAULT 0);")
-            statement?.close()
-
-           //DatabaseUtils().pointDatabase()
+            DatabaseUtils().pointDatabase()
 
         } catch (sqlException: Exception) {
             logger.warning("Exception $sqlException")

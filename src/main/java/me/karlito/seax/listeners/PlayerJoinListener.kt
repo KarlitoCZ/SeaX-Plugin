@@ -9,8 +9,6 @@ import java.util.*
 
 
 class PlayerJoinListener : Listener {
-
-
     @EventHandler
     @Throws(SQLException::class)
     fun inJoin(e: PlayerJoinEvent) {

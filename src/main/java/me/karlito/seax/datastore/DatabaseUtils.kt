@@ -11,10 +11,11 @@ class DatabaseUtils {
 
             //val connection = connection
             val statement = connection?.createStatement()
-            statement?.execute("CREATE TABLE IF NOT EXISTS players (" +
-                    "uuid TEXT PRIMARY KEY," +
-                    "username TEXT NOT NULL," +
-                    "coins INTEGER NOT NULL DEFAULT 0)")
+            statement?.execute("""CREATE TABLE IF NOT EXISTS players (
+                                          uuid varchar(36) NOT NULL PRIMARY KEY,
+                                          username varchar(50) NOT NULL,
+                                          coins mediumint UNSIGNED NOT NULL DEFAULT 0
+                                       );""")
             statement?.close()
         }
 
