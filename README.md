@@ -1,2 +1,2 @@
 # SeaX-Plugin
-A custom plugin for a minecraft PirateCraft by Karlito
+A custom plugin for PirateCraft server network by Karlito
