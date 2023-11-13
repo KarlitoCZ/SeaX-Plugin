@@ -7,14 +7,18 @@ import java.sql.SQLException
 class DatabaseUtils {
 
 
-        fun pointDatabase() {
+        fun database() {
 
             //val connection = connection
             val statement = connection?.createStatement()
             statement?.execute("""CREATE TABLE IF NOT EXISTS players (
                                           uuid varchar(36) NOT NULL PRIMARY KEY,
                                           username varchar(50) NOT NULL,
-                                          coins mediumint UNSIGNED NOT NULL DEFAULT 0
+                                          coins int UNSIGNED NOT NULL DEFAULT 0,
+                                          silver smallint UNSIGNED NOT NULL DEFAULT 0,
+                                          sm_exp int UNSIGNED NOT NULL DEFAULT 0,
+                                          st_exp int UNSIGNED NOT NULL DEFAULT 0,
+                                          wd_exp int UNSIGNED NOT NULL DEFAULT 0
                                        );""")
             statement?.close()
         }
@@ -49,21 +53,70 @@ class DatabaseUtils {
             }
         }
 
+        // Update player stats functions
         @Throws(SQLException::class)
         fun updatePlayerCoins(player: Player, coins: Int) {
             if (connection != null) {
             //if the player doesn't exist, add them
-            if (!playerExists(player)) {
+                if (!playerExists(player)) {
                 addPlayerData(player)
-            }
-            connection!!.prepareStatement("UPDATE players SET coins = ? WHERE uuid = ?").use { preparedStatement ->
-                preparedStatement.setInt(1, coins)
-                preparedStatement.setString(2, player.uniqueId.toString())
-                preparedStatement.executeUpdate()
-            }
+                }
+                connection!!.prepareStatement("UPDATE players SET coins = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, coins)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
             }
         }
 
+        @Throws(SQLException::class)
+        fun updatePlayerSMexp(player: Player, smExp: Int) {
+            if (connection != null) {
+                //if the player doesn't exist, add them
+                if (!playerExists(player)) {
+                    addPlayerData(player)
+                }
+                connection!!.prepareStatement("UPDATE players SET sm-exp = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, smExp)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
+            }
+        }
+
+        @Throws(SQLException::class)
+        fun updatePlayerSTexp(player: Player, stExp: Int) {
+            if (connection != null) {
+                //if the player doesn't exist, add them
+                if (!playerExists(player)) {
+                    addPlayerData(player)
+                }
+                connection!!.prepareStatement("UPDATE players SET st-exp = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, stExp)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
+            }
+        }
+
+        @Throws(SQLException::class)
+        fun updatePlayerWDexp(player: Player, wdExp: Int) {
+            if (connection != null) {
+                //if the player doesn't exist, add them
+                if (!playerExists(player)) {
+                    addPlayerData(player)
+                }
+                connection!!.prepareStatement("UPDATE players SET wd-exp = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, wdExp)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
+            }
+        }
+
+
+
+        // Get player stats functions
         @Throws(SQLException::class)
         fun getPlayerCoins(player: Player): Int {
 
@@ -74,6 +127,47 @@ class DatabaseUtils {
                         resultSet.getInt("coins")
                     } else {
                         0 // Return 0 if the player has no points
+                }
+            }
+        }
+
+        @Throws(SQLException::class)
+        fun getPlayerSMexp(player: Player): Int {
+
+            connection?.prepareStatement("SELECT sm-exp FROM players WHERE uuid = ?").use { preparedStatement ->
+                preparedStatement?.setString(1, player.uniqueId.toString())
+                val resultSet = preparedStatement?.executeQuery()
+                return if (resultSet?.next() == true) {
+                    resultSet.getInt("sm-exp")
+                } else {
+                    0 // Return 0 if the player has no points
+                }
+            }
+        }
+
+        @Throws(SQLException::class)
+        fun getPlayerSTexp(player: Player): Int {
+
+            connection?.prepareStatement("SELECT st-exp FROM players WHERE uuid = ?").use { preparedStatement ->
+                preparedStatement?.setString(1, player.uniqueId.toString())
+                val resultSet = preparedStatement?.executeQuery()
+                return if (resultSet?.next() == true) {
+                    resultSet.getInt("st-exp")
+                } else {
+                    0 // Return 0 if the player has no points
+                }
+            }
+        }
+
+        fun getPlayerWDexp(player: Player): Int {
+
+            connection?.prepareStatement("SELECT wd-exp FROM players WHERE uuid = ?").use { preparedStatement ->
+                preparedStatement?.setString(1, player.uniqueId.toString())
+                val resultSet = preparedStatement?.executeQuery()
+                return if (resultSet?.next() == true) {
+                    resultSet.getInt("wd-exp")
+                } else {
+                    0 // Return 0 if the player has no points
                 }
             }
         }

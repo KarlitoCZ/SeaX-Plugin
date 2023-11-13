@@ -48,7 +48,7 @@ class SeaX : JavaPlugin() {
                // dataFolder.mkdirs()
             //}
 
-            DatabaseUtils().pointDatabase()
+            DatabaseUtils().database()
 
         } catch (sqlException: Exception) {
             logger.warning("Exception $sqlException")

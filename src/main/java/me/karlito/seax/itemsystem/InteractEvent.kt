@@ -22,8 +22,8 @@ class InteractEvent : Listener{
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
         if (mythicMob != null && mythicMob.mobType in lootArray) {
-            event.player.sendMessage("DETECTED")
             if (!attachedEntities.containsKey(playerName)) {
+                event.player.sendMessage("DETECTED")
                 entity.teleport(player.location)
                 player.addPassenger(entity)
 
@@ -42,7 +42,7 @@ class InteractEvent : Listener{
 
         if (event.isSneaking && attachedEntities.containsKey(playerName)) {
             val attachedEntity = attachedEntities[playerName]
-            attachedEntity?.removePassenger(player)
+            player.removePassenger(attachedEntity!!)
             attachedEntities.remove(playerName)
         }
     }
