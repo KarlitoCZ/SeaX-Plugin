@@ -3,7 +3,7 @@ package me.karlito.seax.gui
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
 import me.karlito.seax.SeaX
-import me.karlito.seax.SeaX.Companion.connection
+import me.karlito.seax.datastore.DatabaseUtils
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -25,8 +25,9 @@ class SMgui : CommandExecutor {
         // Level Item
         val level = ItemStack(Material.MAGMA_CREAM)
         val levelmeta = level.itemMeta
+        val smEXP = DatabaseUtils().getPlayerSMexp(sender)
         levelmeta.displayName(Component.text("${ChatColor.RED}Skull Merchants Level"))
-        val lorelevel1 = "${ChatColor.GOLD}Level : TODO"
+        val lorelevel1 = "${ChatColor.GOLD}Exp : $smEXP"
         levelmeta.lore = listOf(lorelevel1)
         levelmeta.setCustomModelData(3487)
         level.itemMeta = levelmeta
@@ -44,7 +45,6 @@ class SMgui : CommandExecutor {
         smInventory.setItem(6, voyage1)
         smInventory.setItem(10, level)
 
-        sender.sendMessage("$connection")
 
         SeaX.guiMap[sender.uniqueId] = smInventory
 

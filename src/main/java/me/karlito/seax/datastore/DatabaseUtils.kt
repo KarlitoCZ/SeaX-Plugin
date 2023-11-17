@@ -4,6 +4,7 @@ import me.karlito.seax.SeaX.Companion.connection
 import org.bukkit.entity.Player
 import java.sql.SQLException
 
+
 class DatabaseUtils {
 
 
@@ -53,7 +54,7 @@ class DatabaseUtils {
             }
         }
 
-        // Update player stats functions
+        // --- Update player stats functions
         @Throws(SQLException::class)
         fun updatePlayerCoins(player: Player, coins: Int) {
             if (connection != null) {
@@ -76,7 +77,7 @@ class DatabaseUtils {
                 if (!playerExists(player)) {
                     addPlayerData(player)
                 }
-                connection!!.prepareStatement("UPDATE players SET sm-exp = ? WHERE uuid = ?").use { preparedStatement ->
+                connection!!.prepareStatement("UPDATE players SET sm_exp = ? WHERE uuid = ?").use { preparedStatement ->
                     preparedStatement.setInt(1, smExp)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
@@ -91,7 +92,7 @@ class DatabaseUtils {
                 if (!playerExists(player)) {
                     addPlayerData(player)
                 }
-                connection!!.prepareStatement("UPDATE players SET st-exp = ? WHERE uuid = ?").use { preparedStatement ->
+                connection!!.prepareStatement("UPDATE players SET st_exp = ? WHERE uuid = ?").use { preparedStatement ->
                     preparedStatement.setInt(1, stExp)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
@@ -106,7 +107,7 @@ class DatabaseUtils {
                 if (!playerExists(player)) {
                     addPlayerData(player)
                 }
-                connection!!.prepareStatement("UPDATE players SET wd-exp = ? WHERE uuid = ?").use { preparedStatement ->
+                connection!!.prepareStatement("UPDATE players SET wd_exp = ? WHERE uuid = ?").use { preparedStatement ->
                     preparedStatement.setInt(1, wdExp)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
@@ -116,7 +117,7 @@ class DatabaseUtils {
 
 
 
-        // Get player stats functions
+        // --- Get player stats functions
         @Throws(SQLException::class)
         fun getPlayerCoins(player: Player): Int {
 
@@ -134,11 +135,11 @@ class DatabaseUtils {
         @Throws(SQLException::class)
         fun getPlayerSMexp(player: Player): Int {
 
-            connection?.prepareStatement("SELECT sm-exp FROM players WHERE uuid = ?").use { preparedStatement ->
+            connection?.prepareStatement("SELECT sm_exp FROM players WHERE uuid = ?").use { preparedStatement ->
                 preparedStatement?.setString(1, player.uniqueId.toString())
                 val resultSet = preparedStatement?.executeQuery()
                 return if (resultSet?.next() == true) {
-                    resultSet.getInt("sm-exp")
+                    resultSet.getInt("sm_exp")
                 } else {
                     0 // Return 0 if the player has no points
                 }
@@ -148,11 +149,11 @@ class DatabaseUtils {
         @Throws(SQLException::class)
         fun getPlayerSTexp(player: Player): Int {
 
-            connection?.prepareStatement("SELECT st-exp FROM players WHERE uuid = ?").use { preparedStatement ->
+            connection?.prepareStatement("SELECT st_exp FROM players WHERE uuid = ?").use { preparedStatement ->
                 preparedStatement?.setString(1, player.uniqueId.toString())
                 val resultSet = preparedStatement?.executeQuery()
                 return if (resultSet?.next() == true) {
-                    resultSet.getInt("st-exp")
+                    resultSet.getInt("st_exp")
                 } else {
                     0 // Return 0 if the player has no points
                 }
@@ -161,11 +162,11 @@ class DatabaseUtils {
 
         fun getPlayerWDexp(player: Player): Int {
 
-            connection?.prepareStatement("SELECT wd-exp FROM players WHERE uuid = ?").use { preparedStatement ->
+            connection?.prepareStatement("SELECT wd_exp FROM players WHERE uuid = ?").use { preparedStatement ->
                 preparedStatement?.setString(1, player.uniqueId.toString())
                 val resultSet = preparedStatement?.executeQuery()
                 return if (resultSet?.next() == true) {
-                    resultSet.getInt("wd-exp")
+                    resultSet.getInt("wd_exp")
                 } else {
                     0 // Return 0 if the player has no points
                 }
