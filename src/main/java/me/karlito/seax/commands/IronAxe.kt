@@ -1,6 +1,7 @@
 package me.karlito.seax.commands
 
 import me.clip.placeholderapi.PlaceholderAPI
+import me.karlito.seax.datastore.DatabaseUtils
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.ChatColor
@@ -31,7 +32,7 @@ class IronAxe : CommandExecutor {
         // Create formatted and multi-line lore
         val loreLine1 = PlaceholderAPI.setPlaceholders(sender,"${ChatColor.RESET}${ChatColor.WHITE}%img_cosmetic%")
         val loreLine2 = "${ChatColor.GOLD}This item is only a cosmetic."
-
+        DatabaseUtils().addPlayerData(sender)
         // Add the lore lines to the item
         itemMeta.lore = listOf(loreLine1, loreLine2)
 

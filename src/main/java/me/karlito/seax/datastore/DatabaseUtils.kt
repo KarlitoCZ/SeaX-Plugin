@@ -17,9 +17,9 @@ class DatabaseUtils {
                                           username varchar(50) NOT NULL,
                                           coins int UNSIGNED NOT NULL DEFAULT 0,
                                           silver smallint UNSIGNED NOT NULL DEFAULT 0,
-                                          sm_exp int UNSIGNED NOT NULL DEFAULT 0,
-                                          st_exp int UNSIGNED NOT NULL DEFAULT 0,
-                                          wd_exp int UNSIGNED NOT NULL DEFAULT 0
+                                          sm_xp int UNSIGNED NOT NULL DEFAULT 0,
+                                          st_xp int UNSIGNED NOT NULL DEFAULT 0,
+                                          wd_xp int UNSIGNED NOT NULL DEFAULT 0
                                        );""")
             statement?.close()
         }
@@ -71,13 +71,13 @@ class DatabaseUtils {
         }
 
         @Throws(SQLException::class)
-        fun updatePlayerSMexp(player: Player, smExp: Int) {
+        fun updatePlayerSMxp(player: Player, smExp: Int) {
             if (connection != null) {
                 //if the player doesn't exist, add them
                 if (!playerExists(player)) {
                     addPlayerData(player)
                 }
-                connection!!.prepareStatement("UPDATE players SET sm_exp = ? WHERE uuid = ?").use { preparedStatement ->
+                connection!!.prepareStatement("UPDATE players SET sm_xp = ? WHERE uuid = ?").use { preparedStatement ->
                     preparedStatement.setInt(1, smExp)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
@@ -86,13 +86,13 @@ class DatabaseUtils {
         }
 
         @Throws(SQLException::class)
-        fun updatePlayerSTexp(player: Player, stExp: Int) {
+        fun updatePlayerSTxp(player: Player, stExp: Int) {
             if (connection != null) {
                 //if the player doesn't exist, add them
                 if (!playerExists(player)) {
                     addPlayerData(player)
                 }
-                connection!!.prepareStatement("UPDATE players SET st_exp = ? WHERE uuid = ?").use { preparedStatement ->
+                connection!!.prepareStatement("UPDATE players SET st_xp = ? WHERE uuid = ?").use { preparedStatement ->
                     preparedStatement.setInt(1, stExp)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
@@ -101,13 +101,13 @@ class DatabaseUtils {
         }
 
         @Throws(SQLException::class)
-        fun updatePlayerWDexp(player: Player, wdExp: Int) {
+        fun updatePlayerWDxp(player: Player, wdExp: Int) {
             if (connection != null) {
                 //if the player doesn't exist, add them
                 if (!playerExists(player)) {
                     addPlayerData(player)
                 }
-                connection!!.prepareStatement("UPDATE players SET wd_exp = ? WHERE uuid = ?").use { preparedStatement ->
+                connection!!.prepareStatement("UPDATE players SET wd_xp = ? WHERE uuid = ?").use { preparedStatement ->
                     preparedStatement.setInt(1, wdExp)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
@@ -133,13 +133,13 @@ class DatabaseUtils {
         }
 
         @Throws(SQLException::class)
-        fun getPlayerSMexp(player: Player): Int {
+        fun getPlayerSMxp(player: Player): Int {
 
-            connection?.prepareStatement("SELECT sm_exp FROM players WHERE uuid = ?").use { preparedStatement ->
+            connection?.prepareStatement("SELECT sm_xp FROM players WHERE uuid = ?").use { preparedStatement ->
                 preparedStatement?.setString(1, player.uniqueId.toString())
                 val resultSet = preparedStatement?.executeQuery()
                 return if (resultSet?.next() == true) {
-                    resultSet.getInt("sm_exp")
+                    resultSet.getInt("sm_xp")
                 } else {
                     0 // Return 0 if the player has no points
                 }
@@ -147,26 +147,26 @@ class DatabaseUtils {
         }
 
         @Throws(SQLException::class)
-        fun getPlayerSTexp(player: Player): Int {
+        fun getPlayerSTxp(player: Player): Int {
 
-            connection?.prepareStatement("SELECT st_exp FROM players WHERE uuid = ?").use { preparedStatement ->
+            connection?.prepareStatement("SELECT st_xp FROM players WHERE uuid = ?").use { preparedStatement ->
                 preparedStatement?.setString(1, player.uniqueId.toString())
                 val resultSet = preparedStatement?.executeQuery()
                 return if (resultSet?.next() == true) {
-                    resultSet.getInt("st_exp")
+                    resultSet.getInt("st_xp")
                 } else {
                     0 // Return 0 if the player has no points
                 }
             }
         }
 
-        fun getPlayerWDexp(player: Player): Int {
+        fun getPlayerWDxp(player: Player): Int {
 
-            connection?.prepareStatement("SELECT wd_exp FROM players WHERE uuid = ?").use { preparedStatement ->
+            connection?.prepareStatement("SELECT wd_xp FROM players WHERE uuid = ?").use { preparedStatement ->
                 preparedStatement?.setString(1, player.uniqueId.toString())
                 val resultSet = preparedStatement?.executeQuery()
                 return if (resultSet?.next() == true) {
-                    resultSet.getInt("wd_exp")
+                    resultSet.getInt("wd_xp")
                 } else {
                     0 // Return 0 if the player has no points
                 }

@@ -4,6 +4,7 @@ import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
 import me.karlito.seax.SeaX
 import me.karlito.seax.datastore.DatabaseUtils
+import me.karlito.seax.levels.LevelCalculate
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -20,22 +21,24 @@ class SMgui : CommandExecutor {
         if(sender !is Player) return false
 
         val smInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
-        val texture = FontImageWrapper("_iainternal:red_gui");
+        val texture = FontImageWrapper("_iainternal:red_gui")
 
         // Level Item
         val level = ItemStack(Material.MAGMA_CREAM)
         val levelmeta = level.itemMeta
-        val smEXP = DatabaseUtils().getPlayerSMexp(sender)
-        levelmeta.displayName(Component.text("${ChatColor.RED}Skull Merchants Level"))
-        val lorelevel1 = "${ChatColor.GOLD}Exp : $smEXP"
-        levelmeta.lore = listOf(lorelevel1)
+        val smXP = DatabaseUtils().getPlayerSMxp(sender)
+        val (smlevel, remainingXpMax) = LevelCalculate().calculateLevel(smXP)
+        levelmeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}Skull Merchants Level"))
+        val lorelevel1 = "${ChatColor.GOLD}Level : $smlevel"
+        val lorelevel2 = "${ChatColor.GOLD}Remaining Xp : $smXP/$remainingXpMax"
+        levelmeta.lore = listOf(lorelevel1, lorelevel2)
         levelmeta.setCustomModelData(3487)
         level.itemMeta = levelmeta
 
         // Buried treasure
         val voyage1 = ItemStack(Material.MAP)
         val voyagemeta = voyage1.itemMeta
-        voyagemeta.displayName(Component.text("${ChatColor.RED}Voyage for the buried treasure"))
+        voyagemeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}Voyage for the buried treasure"))
         val lore1 = "${ChatColor.GOLD}Go around the map and find buried loot"
         val lore2 = "${ChatColor.GOLD}and return it to the Skull Merchants."
         voyagemeta.lore = listOf(lore1, lore2)

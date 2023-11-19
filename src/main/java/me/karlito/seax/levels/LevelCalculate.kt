@@ -1,23 +1,30 @@
 package me.karlito.seax.levels
 
 class LevelCalculate {
-    fun calculateLevel(exp: Int): Int {
-        // Define level-up thresholds
-        val levelThresholds = listOf(0, 25, 40, 60, 90, 130, 200, 240, 300, 350, 410, 470, 530, 600, 655, 710)
-
-        // Find the current level based on the exp
-        var currentLevel = 1
-        var remainingExp = exp
-
-        for (threshold in levelThresholds) {
-            if (remainingExp >= threshold) {
-                currentLevel++
-                remainingExp -= threshold
-            } else {
-                break
-            }
+    fun calculateLevel(xp: Int): Pair<Int, Int> {
+        if (xp < 0) {
+            println("Err")
         }
 
-        return currentLevel
+        val levelRequirements = mapOf(
+            1 to 0,
+            2 to 40,
+            3 to 65,
+            4 to 80,
+            5 to 145,
+            6 to 170,
+            7 to 220,
+            8 to 270
+            // Add more level requirements as needed
+        )
+
+        val currentLevel = levelRequirements.entries.lastOrNull { xp >= it.value }?.key ?: 1
+        val nextLevel = currentLevel + 1
+        val xpNeededForNextLevel = levelRequirements[nextLevel] ?: (currentLevel * 35)
+
+        val remainingXp = xpNeededForNextLevel - xp
+
+
+        return Pair(currentLevel, xpNeededForNextLevel)
     }
 }
