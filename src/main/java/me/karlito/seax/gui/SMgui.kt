@@ -23,15 +23,27 @@ class SMgui : CommandExecutor {
         val smInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
         val texture = FontImageWrapper("_iainternal:red_gui")
 
+
         // Level Item
         val level = ItemStack(Material.MAGMA_CREAM)
         val levelmeta = level.itemMeta
         val smXP = DatabaseUtils().getPlayerSMxp(sender)
         val (smlevel, remainingXpMax) = LevelCalculate().calculateLevel(smXP)
-        levelmeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}Skull Merchants Level"))
+
         val lorelevel1 = "${ChatColor.GOLD}Level : $smlevel"
-        val lorelevel2 = "${ChatColor.GOLD}Remaining Xp : $smXP/$remainingXpMax"
+        var lorelevel2: String? = null
+
+        if (smlevel >= 20) {
+            lorelevel2 = "${ChatColor.GOLD}Remaining Xp : ${ChatColor.GREEN}${ChatColor.BOLD}MAX LEVEL"
+            
+        } else {
+            lorelevel2 = "${ChatColor.GOLD}Remaining Xp : $smXP/$remainingXpMax"
+        }
+
+        levelmeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}Skull Merchants Level"))
+
         levelmeta.lore = listOf(lorelevel1, lorelevel2)
+
         levelmeta.setCustomModelData(3487)
         level.itemMeta = levelmeta
 
