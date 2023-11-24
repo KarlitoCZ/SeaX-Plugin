@@ -115,6 +115,7 @@
                 <id>placeholderapi</id>
                 <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
             </repository>
+
     </repositories>
 
     <dependencies>
@@ -157,6 +158,13 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.ConnorLinfoot</groupId>
+            <artifactId>TitleAPI</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+
         <dependency>
             <groupId>com.github.LoneDev6</groupId>
             <artifactId>api-itemsadder</artifactId>

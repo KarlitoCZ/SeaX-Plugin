@@ -18,8 +18,6 @@ import java.util.*
 
 class SeaX : JavaPlugin() {
 
-
-
     companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
 
@@ -42,11 +40,8 @@ class SeaX : JavaPlugin() {
             Class.forName("com.mysql.cj.jdbc.Driver")
             connection = DriverManager.getConnection(url, user, pass)
 
-            logger.warning("DATABASE $connection")
+            logger.info("DATABASE $connection")
 
-            //if (!dataFolder.exists()){
-               // dataFolder.mkdirs()
-            //}
 
             DatabaseUtils().database()
 

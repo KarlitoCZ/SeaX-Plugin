@@ -31,13 +31,12 @@ class SMgui : CommandExecutor {
         val (smlevel, remainingXpMax) = LevelCalculate().calculateLevel(smXP)
 
         val lorelevel1 = "${ChatColor.GOLD}Level : $smlevel"
-        var lorelevel2: String? = null
 
-        if (smlevel >= 20) {
-            lorelevel2 = "${ChatColor.GOLD}Remaining Xp : ${ChatColor.GREEN}${ChatColor.BOLD}MAX LEVEL"
-            
+        val lorelevel2 = if (smlevel >= 20) {
+            "${ChatColor.GOLD}Remaining Xp : ${ChatColor.GREEN}${ChatColor.BOLD}MAX LEVEL"
+
         } else {
-            lorelevel2 = "${ChatColor.GOLD}Remaining Xp : $smXP/$remainingXpMax"
+            "${ChatColor.GOLD}Remaining Xp : $smXP/$remainingXpMax"
         }
 
         levelmeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}Skull Merchants Level"))
