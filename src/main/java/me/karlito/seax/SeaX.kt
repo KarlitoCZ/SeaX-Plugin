@@ -21,7 +21,7 @@ class SeaX : JavaPlugin() {
 
     companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
-        val crewMap: MutableMap<UUID, List<String>> = mutableMapOf()
+        val crewMap: MutableMap<UUID, MutableList<String>> = mutableMapOf()
 
         var connection : Connection? = null
     }
