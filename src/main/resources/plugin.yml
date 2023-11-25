@@ -21,4 +21,6 @@ commands:
   getcoins:
     description: Levels.
   setcoins:
-      escription: Levels.
+    description: Levels.
+  crew:
+    description: Crew Create Invite

@@ -1,6 +1,7 @@
 package me.karlito.seax
 
 import me.karlito.seax.commands.*
+import me.karlito.seax.crew.CrewCommands
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.gui.SMgui
 import me.karlito.seax.itemsystem.InteractEvent
@@ -20,6 +21,7 @@ class SeaX : JavaPlugin() {
 
     companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
+        val crewMap: MutableMap<UUID, List<String>> = mutableMapOf()
 
         var connection : Connection? = null
     }
@@ -69,6 +71,7 @@ class SeaX : JavaPlugin() {
         getCommand("defGui")?.setExecutor(SMgui())
         getCommand("getcoins")?.setExecutor(GetCoinsCommand())
         getCommand("setcoins")?.setExecutor(SetCoinsCommand())
+        getCommand("crew")?.setExecutor(CrewCommands())
 
         logger.info("Registered Commands")
     }
