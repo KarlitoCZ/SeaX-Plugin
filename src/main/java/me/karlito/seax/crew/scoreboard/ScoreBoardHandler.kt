@@ -53,6 +53,8 @@ class ScoreBoardHandler {
                 createScoreBoard(player)
             }
 
+        } else {
+            createScoreBoard(player)
         }
 
 

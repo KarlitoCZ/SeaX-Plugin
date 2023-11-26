@@ -41,11 +41,18 @@ class CrewHandler {
         val size = members?.size?.minus(1)
         size?.let { members.add(it, target.name) }
         ScoreBoardHandler().updateScoreBoard(sender, members)
+        ScoreBoardHandler().updateScoreBoard(target, members)
         return crewMap[this.crewId[sender.name]]
     }
 
+    fun guiRequest(invited : Player, inviter : Player) {
+
+    }
+
     fun removeCrew(sender: Player) {
-        crewMap[this.crewId[sender.name]]?.clear()
+        val members = crewMap[this.crewId[sender.name]]
+        members?.clear()
+        ScoreBoardHandler().updateScoreBoard(sender, members)
         crewMap.remove(this.crewId[sender.name])
     }
 }

@@ -33,7 +33,6 @@ class SeaX : JavaPlugin() {
         registercommands()
         registerlisteners()
 
-
         val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"
         val user = "vjywbb4nphu4f81wxu5m"
         val pass = "pscale_pw_ucxIORienh18agRsfgL7YnktYr8j69xRroStpQy7l5T"
