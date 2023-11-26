@@ -28,8 +28,6 @@ class ScoreBoardHandler {
         score4.score = 6
         val score5: Score = objective.getScore("${ChatColor.BLUE}Crew :")
         score5.score = 5
-        val score6: Score = objective.getScore("  ")
-        score6.score = 1
 
         player.scoreboard = scoreboard
     }

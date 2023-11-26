@@ -37,8 +37,10 @@ class CrewHandler {
     }
 
     fun addPlayer(sender: Player, target: Player): MutableList<String>? {
-        val size = crewMap[this.crewId[sender.name]]?.size?.minus(1)
-        size?.let { crewMap[this.crewId[sender.name]]?.add(it, target.name) }
+        val members = crewMap[this.crewId[sender.name]]
+        val size = members?.size?.minus(1)
+        size?.let { members.add(it, target.name) }
+        ScoreBoardHandler().updateScoreBoard(sender, members)
         return crewMap[this.crewId[sender.name]]
     }
 
