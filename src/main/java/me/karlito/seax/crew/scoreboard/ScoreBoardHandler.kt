@@ -32,36 +32,62 @@ class ScoreBoardHandler {
         player.scoreboard = scoreboard
     }
 
-    fun updateScoreBoard(player: Player, members: MutableList<String>?) {
-
-        val scoreboard: Scoreboard = player.scoreboard
-
-        val objective: Objective? = scoreboard.getObjective("${ChatColor.GOLD}  ᴘɪʀᴀᴛᴇ ᴄʀᴀꜰᴛ  ")
+    fun deleteAllMemberScoreBoard(members: MutableList<String>?) {
 
         if (members != null) {
-            if (objective != null) {
+            for (member in members) {
+                val player = Bukkit.getPlayer(member)
+                val manager = Bukkit.getScoreboardManager()
+                val newScoreboard = manager.mainScoreboard
 
-                for (member in members) {
-                    val score1: Score = objective.getScore("    - $member")
-                    score1.score = 1
-                    player.sendMessage(member)
-                    player.scoreboard = scoreboard
-                }
+                player?.scoreboard = newScoreboard
 
 
-            } else {
-                createScoreBoard(player)
+            }
+        }
+
+
+    }
+
+    fun updateAllMemberScoreBoard(members: MutableList<String>?) {
+
+        if (members != null) {
+
+            for (member in members) {
+                val player = Bukkit.getPlayer(member)
+
+                val scoreboard: Scoreboard = player?.scoreboard!!
+
+                val objective: Objective? = scoreboard.getObjective("${ChatColor.GOLD}  ᴘɪʀᴀᴛᴇ ᴄʀᴀꜰᴛ  ")
+
+                val score1: Score = objective!!.getScore("    - $member")
+                score1.score = 1
+                player.sendMessage(member)
+                player.scoreboard = scoreboard
+
             }
 
         } else {
-            createScoreBoard(player)
+            println("In crew there are no members")
         }
+
+
+
+
+
 
 
 
     }
 
+
+
+
+
 }
+
+
+
 
 
 
