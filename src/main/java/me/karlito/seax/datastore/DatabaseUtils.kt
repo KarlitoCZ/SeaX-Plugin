@@ -71,6 +71,21 @@ class DatabaseUtils {
         }
 
         @Throws(SQLException::class)
+        fun updatePlayerSilver(player: Player, silver: Int) {
+            if (connection != null) {
+                //if the player doesn't exist, add them
+                if (!playerExists(player)) {
+                    addPlayerData(player)
+                }
+                connection!!.prepareStatement("UPDATE players SET silver = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, silver)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
+            }
+        }
+
+        @Throws(SQLException::class)
         fun updatePlayerSMxp(player: Player, smExp: Int) {
             if (connection != null) {
                 //if the player doesn't exist, add them
@@ -128,6 +143,20 @@ class DatabaseUtils {
                         resultSet.getInt("coins")
                     } else {
                         0 // Return 0 if the player has no points
+                }
+            }
+        }
+
+        @Throws(SQLException::class)
+        fun getPlayerSilver(player: Player): Int {
+
+            connection?.prepareStatement("SELECT silver FROM players WHERE uuid = ?").use { preparedStatement ->
+                preparedStatement?.setString(1, player.uniqueId.toString())
+                val resultSet = preparedStatement?.executeQuery()
+                return if (resultSet?.next() == true) {
+                    resultSet.getInt("silver")
+                } else {
+                    0 // Return 0 if the player has no points
                 }
             }
         }

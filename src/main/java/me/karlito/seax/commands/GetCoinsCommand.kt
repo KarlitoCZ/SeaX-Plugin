@@ -1,5 +1,6 @@
 package me.karlito.seax.commands
 
+import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.datastore.DatabaseUtils
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -14,14 +15,15 @@ class GetCoinsCommand : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
         try {
-            if (args.isEmpty() == true && sender is Player) {
+            if (args.isEmpty() && sender is Player) {
                 val coins: Int = DatabaseUtils().getPlayerCoins(sender)
+
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2☠&r&aYou have &e$coins&a coins!"))
                 return true
             } else {
 
                 //Get the player
-                val playerName = args!![0]
+                val playerName = args[0]
                 val player = Bukkit.getServer().getPlayer(playerName)
                 if (player == null) {
                     sender.sendMessage("Player not found!")

@@ -1,6 +1,7 @@
 package me.karlito.seax.crew
 
 import me.karlito.seax.SeaX.Companion.crewMap
+import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -23,11 +24,16 @@ class CrewHandler {
         members.add(0, player.name)
         crewMap[crewId] = members
         this.crewId[player.name] = crewId
+
+        ScoreBoardHandler().updateScoreBoard(player, members)
+
         return crewId
     }
 
     fun getMembers(player: Player): List<String>? {
-        return crewMap[this.crewId[player.name]]
+        val members = crewMap[this.crewId[player.name]]
+        player.sendMessage("From getMembers $members")
+        return members
     }
 
     fun addPlayer(sender: Player, target: Player): MutableList<String>? {
@@ -63,42 +69,43 @@ class CrewCommands : CommandExecutor {
 
         val crewMembers = crewHandler.getMembers(sender)
 
-        if (args.contains("invite")) {
-            val playerName = args.get(index = 1)
-            val target = Bukkit.getPlayer(playerName)
-            if (target == null) {
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Player not found")
-                return true
-            }
-            if (crewMembers?.contains(sender.name) == true) {
-                if (crewMembers.contains(target.name)) {
-                    sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} is already in the crew")
+            if (args.contains("invite")) {
+                if (args.size != 2) return true
+                val playerName = args.get(index = 1)
+                val target = Bukkit.getPlayer(playerName)
+                if (target == null) {
+                    sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Player not found")
                     return true
                 }
+                if (crewMembers?.contains(sender.name) == true) {
+                    if (crewMembers.contains(target.name)) {
+                        sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} is already in the crew")
+                        return true
+                    }
 
-                val members = crewHandler.addPlayer(sender, target)
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members: $members")
-                return true
+                    val members = crewHandler.addPlayer(sender, target)
+                    sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
+                    sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members: $members")
+                    return true
 
-            } else {
-                sender.sendMessage("$crewMembers MEMBERS")
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are not in a crew, cannot invite")
+                } else {
+                    sender.sendMessage("$crewMembers MEMBERS")
+                    sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are not in a crew, cannot invite")
+                }
+
+
             }
-
-
-        }
 
         if (args.contains("create")) {
             if (crewMembers?.contains(sender.name) == true) {
-                sender.sendMessage("You are in a crew please delete it first")
+                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are in a group please delete it first")
                 return false
             }
 
             val crewId = crewHandler.createCrew(sender) ?: return false
 
             sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Crew has been created")
-            sender.sendMessage("Crew created! Crew ID: $crewId, Members: ${crewMap[crewId]}")
+            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Crew ID: $crewId, Members: ${crewMap[crewId]}")
             return true
         }
         if (args.contains("delete")) {

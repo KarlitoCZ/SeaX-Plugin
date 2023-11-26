@@ -29,6 +29,7 @@ class IronAxe : CommandExecutor {
         val enderBow : ItemStack = ItemStack(Material.IRON_AXE)
         val itemMeta = enderBow.itemMeta
 
+
         // Create formatted and multi-line lore
         val loreLine1 = PlaceholderAPI.setPlaceholders(sender,"${ChatColor.RESET}${ChatColor.WHITE}%img_cosmetic%")
         val loreLine2 = "${ChatColor.GOLD}This item is only a cosmetic."
