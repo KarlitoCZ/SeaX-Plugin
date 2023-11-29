@@ -18,12 +18,11 @@ class InventoryClickListener : Listener {
             if(event.currentItem!!.itemMeta.hasCustomModelData()) {
                 when(event.currentItem?.itemMeta?.customModelData) {
                     1788 -> {
+                        event.isCancelled = true
                         SMVoyages().voyageEvent1(player)
                         event.clickedInventory?.close()
                     }
                 }
-            }
-            else {
             }
             event.isCancelled = true
         }

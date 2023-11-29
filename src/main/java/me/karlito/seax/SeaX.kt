@@ -26,8 +26,6 @@ class SeaX : JavaPlugin() {
         var connection : Connection? = null
     }
 
-    //var pointsDatabase: Unit? = null
-
     override fun onEnable() {
         logger.info("The Seas Are Now Safe")
         registercommands()
