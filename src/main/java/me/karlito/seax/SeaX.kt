@@ -9,6 +9,7 @@ import me.karlito.seax.listeners.InventoryClickListener
 import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.PlayerJoinListener
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.plugin.java.JavaPlugin
 import java.sql.Connection
@@ -21,6 +22,7 @@ class SeaX : JavaPlugin() {
 
     companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
+        val pendingInvitations: MutableMap<Player, Player> = HashMap()
         val crewMap: MutableMap<UUID, MutableList<String>> = mutableMapOf()
 
         var connection : Connection? = null

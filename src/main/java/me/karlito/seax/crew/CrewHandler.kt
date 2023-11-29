@@ -37,7 +37,7 @@ class CrewHandler {
 
     fun getMembers(player: Player): List<String>? {
         val members = crewMap[this.crewId[player.name]]
-        player.sendMessage("From getMembers $members")
+        //player.sendMessage("From getMembers $members")
         return members
     }
 
@@ -45,6 +45,8 @@ class CrewHandler {
         val members = crewMap[this.crewId[sender.name]]
         val size = members?.size?.minus(1)
         size?.let { members.add(it, target.name) }
+        sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
+        sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members: $members")
         ScoreBoardHandler().updateAllMemberScoreBoard(members)
         return crewMap[this.crewId[sender.name]]
     }
@@ -78,6 +80,7 @@ class CrewHandler {
         requestInventory.setItem(11, yesItem)
 
         SeaX.guiMap[invited.uniqueId] = requestInventory
+        SeaX.pendingInvitations[inviter] = invited
 
         invited.openInventory(requestInventory)
     }
