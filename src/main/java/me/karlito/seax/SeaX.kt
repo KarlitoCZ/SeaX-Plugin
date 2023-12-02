@@ -2,6 +2,7 @@ package me.karlito.seax
 
 import me.karlito.seax.commands.*
 import me.karlito.seax.crew.CrewCommands
+import me.karlito.seax.crew.InventoryClickListenerInvite
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.gui.SMgui
 import me.karlito.seax.itemsystem.InteractEvent
@@ -9,7 +10,6 @@ import me.karlito.seax.listeners.InventoryClickListener
 import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.PlayerJoinListener
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.plugin.java.JavaPlugin
 import java.sql.Connection
@@ -22,9 +22,8 @@ class SeaX : JavaPlugin() {
 
     companion object {
         val guiMap: MutableMap<UUID, Inventory> = mutableMapOf()
-        val pendingInvitations: MutableMap<Player, Player> = HashMap()
+        val inviteMap = HashMap<String, String>()
         val crewMap: MutableMap<UUID, MutableList<String>> = mutableMapOf()
-
         var connection : Connection? = null
     }
 
@@ -76,6 +75,7 @@ class SeaX : JavaPlugin() {
     }
 
     private fun registerlisteners() {
+        Bukkit.getServer().pluginManager.registerEvents(InventoryClickListenerInvite(), this)
         Bukkit.getServer().pluginManager.registerEvents(InventoryCloseListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(InventoryClickListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(PlayerJoinListener(), this)

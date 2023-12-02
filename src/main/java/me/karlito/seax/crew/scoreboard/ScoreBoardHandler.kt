@@ -71,18 +71,7 @@ class ScoreBoardHandler {
             println("In crew there are no members")
         }
 
-
-
-
-
-
-
-
     }
-
-
-
-
 
 }
 

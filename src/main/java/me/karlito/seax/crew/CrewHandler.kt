@@ -2,6 +2,7 @@ package me.karlito.seax.crew
 
 import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.crewMap
+import me.karlito.seax.SeaX.Companion.inviteMap
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
@@ -12,11 +13,15 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
 class CrewHandler {
     private val crewId: MutableMap<String, UUID> = mutableMapOf()
+
     fun createCrew(player: Player): UUID? {
         crewMap.forEach { (_, members) ->
             if (members.contains(player.name)) {
@@ -29,6 +34,8 @@ class CrewHandler {
         members.add(0, player.name)
         crewMap[crewId] = members
         this.crewId[player.name] = crewId
+        println("THE CREW ID ${this.crewId[player.name]}")
+        println("THE CREWS $crewMap")
 
         ScoreBoardHandler().updateAllMemberScoreBoard(members)
 
@@ -41,26 +48,20 @@ class CrewHandler {
         return members
     }
 
-    fun addPlayer(sender: Player, target: Player): MutableList<String>? {
-        val members = crewMap[this.crewId[sender.name]]
-        val size = members?.size?.minus(1)
-        size?.let { members.add(it, target.name) }
-        sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
-        sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members: $members")
-        ScoreBoardHandler().updateAllMemberScoreBoard(members)
-        return crewMap[this.crewId[sender.name]]
-    }
+
 
     fun guiRequest(invited: Player, inviter: Player) {
         val inviterName = inviter.name
-        val requestInventory = Bukkit.createInventory(invited, 27, Component.text("Accept crew invite from $inviterName").color(TextColor.color(0, 0, 0)))
+        val requestInventory = Bukkit.createInventory(
+            invited,
+            27,
+            Component.text("Invite from $inviterName").color(TextColor.color(0, 0, 0))
+        )
         // Yes Item
         val yesItem = ItemStack(Material.GREEN_CONCRETE)
         val yesMeta = yesItem.itemMeta
 
         yesMeta.displayName(Component.text("${ChatColor.GREEN}${ChatColor.BOLD}Yes"))
-
-
 
         yesMeta.setCustomModelData(3565)
         yesItem.itemMeta = yesMeta
@@ -79,19 +80,45 @@ class CrewHandler {
         requestInventory.setItem(15, noItem)
         requestInventory.setItem(11, yesItem)
 
+        inviteMap[invited.name] = inviter.name
         SeaX.guiMap[invited.uniqueId] = requestInventory
-        SeaX.pendingInvitations[inviter] = invited
+
 
         invited.openInventory(requestInventory)
     }
 
+    fun testId(sender: Player) {
+        println("TEST TEST ${sender.name}")
+        println("TEST TEST ${crewId[sender.name]}")
+    }
 
+    fun addPlayer(sender: Player, target: Player){
+        val senderName = sender.name
+        val crewId = crewId[senderName]
+        //val members = crewMap[this.crewId[sender.name]]
+
+        println("Inviter: $senderName")
+        println("Invited: ${target.name}")
+        println("Inviter CrewId: $crewId")
+
+        if (crewId != null) {
+            val members = crewMap[crewId]
+
+            if (members != null) {
+                members.add(members.size - 1, target.name)
+                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
+                ScoreBoardHandler().updateAllMemberScoreBoard(members)
+            }
+        } else {
+            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Unable to add player. Crew information not found.")
+        }
+    }
     fun removeCrew(sender: Player) {
-        val members = crewMap[this.crewId[sender.name]]
+        val members = crewMap[crewId[sender.name]]
         members?.clear()
         ScoreBoardHandler().deleteAllMemberScoreBoard(members)
         ScoreBoardHandler().createScoreBoard(sender)
-        crewMap.remove(this.crewId[sender.name])
+        crewMap.remove(crewId[sender.name])
     }
 }
 
@@ -129,12 +156,8 @@ class CrewCommands : CommandExecutor {
                     sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} is already in the crew")
                     return true
                 }
-
-                //val members = crewHandler.addPlayer(sender, target)
-                //sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
-                //sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members: $members")
-                CrewHandler().guiRequest(target, sender)
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Invite send to ${target.name}")
+                crewHandler.addPlayer(sender, target)
+                //sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Invite send to ${target.name}")
                 return true
 
             } else {
@@ -167,6 +190,40 @@ class CrewCommands : CommandExecutor {
         }
 
         return true
+    }
+}
+
+class InventoryClickListenerInvite : Listener {
+
+    @EventHandler
+    fun inventorClickEventInvite(event: InventoryClickEvent) {
+        val player = event.whoClicked as Player
+        val playerUUID = event.whoClicked.uniqueId
+        //inviteMap[player.name] ?: return
+        val inviter = inviteMap[player.name]!!
+        println(inviter)
+
+
+        if(event.inventory ==  SeaX.guiMap[playerUUID]) {
+            if(event.currentItem == null) return
+            if(event.currentItem?.itemMeta?.hasCustomModelData() == true) {
+                when(event.currentItem?.itemMeta?.customModelData) {
+                    3565 -> {
+                        event.isCancelled = true
+                        //CrewHandler().testId(inviter)
+                        if(inviteMap.containsKey(player.name)) inviteMap.remove(player.name)
+                        event.clickedInventory?.close()
+                    }
+                    3566 -> {
+                        event.isCancelled = true
+                        event.clickedInventory?.close()
+                        if(inviteMap.containsKey(player.name)) inviteMap.remove(player.name)
+                    }
+                }
+            }
+            event.isCancelled = true
+        }
+
     }
 }
 
