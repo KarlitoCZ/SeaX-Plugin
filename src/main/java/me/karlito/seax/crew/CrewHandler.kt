@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack
 import java.util.*
 
 class CrewHandler {
-    private val crewId: MutableMap<String, UUID> = mutableMapOf()
+    val crewId: MutableMap<String, UUID> = mutableMapOf()
 
     fun createCrew(player: Player): UUID? {
         crewMap.forEach { (_, members) ->
@@ -34,8 +34,8 @@ class CrewHandler {
         members.add(0, player.name)
         crewMap[crewId] = members
         this.crewId[player.name] = crewId
-        println("THE CREW ID ${this.crewId[player.name]}")
-        println("THE CREWS $crewMap")
+        //println("THE CREW ID ${this.crewId[player.name]}")
+        //println("THE CREWS $crewMap")
 
         ScoreBoardHandler().updateAllMemberScoreBoard(members)
 
@@ -105,8 +105,10 @@ class CrewHandler {
             val members = crewMap[crewId]
 
             if (members != null) {
-                members.add(members.size - 1, target.name)
+                val size = members.size.minus(1)
+                size.let { members.add(it, target.name) }
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
+                ScoreBoardHandler().updateScoreBoard(sender, members)
                 ScoreBoardHandler().updateAllMemberScoreBoard(members)
             }
         } else {
@@ -116,8 +118,7 @@ class CrewHandler {
     fun removeCrew(sender: Player) {
         val members = crewMap[crewId[sender.name]]
         members?.clear()
-        ScoreBoardHandler().deleteAllMemberScoreBoard(members)
-        ScoreBoardHandler().createScoreBoard(sender)
+        ScoreBoardHandler().updateAllMemberScoreBoard(members)
         crewMap.remove(crewId[sender.name])
     }
 }
