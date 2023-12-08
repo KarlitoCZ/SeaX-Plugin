@@ -132,13 +132,28 @@ class ScoreBoardHandler {
             for (member in crewMembers) {
                 val player = Bukkit.getPlayerExact(member)
                 if (player != null) {
-                    deleteAllMemberScoreBoard(crewMembers)
-                    createScoreBoard(player)
+                    //deleteAllMemberScoreBoard(crewMembers)
+                    //createScoreBoard(player)
                     updateScoreBoard(player, crewMembers)
                 }
             }
         }
     }
+
+    fun refreshScoreboardAllMembers(members : MutableList<String>?) {
+
+        if (members != null) {
+            deleteAllMemberScoreBoard(members)
+            for (member in members) {
+                val player = Bukkit.getPlayerExact(member)
+                if (player != null) {
+                    createScoreBoard(player)
+                }
+            }
+        }
+
+    }
+
 }
 
 

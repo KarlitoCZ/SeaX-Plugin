@@ -21,6 +21,7 @@ import java.util.*
 
 class CrewHandler {
     val crewId: MutableMap<String, UUID> = mutableMapOf()
+    val crewLeader: MutableMap<String, String> = mutableMapOf()
 
     fun createCrew(player: Player): UUID? {
         crewMap.forEach { (_, members) ->
@@ -42,12 +43,21 @@ class CrewHandler {
         return crewId
     }
 
-    fun getMembers(player: Player): List<String>? {
-        val members = crewMap[this.crewId[player.name]]
-        //player.sendMessage("From getMembers $members")
-        return members
-    }
+    fun getMembers(player: Player): MutableList<String>? {
+        val crewId = this.crewId[player.name]
 
+        if (crewId != null) {
+            val members = crewMap[crewId]
+            return members
+        } else {
+            for ((key, value) in crewMap) {
+                if (value.contains(player.name)) {
+                    return value
+                }
+            }
+            return null
+        }
+    }
 
 
     fun guiRequest(invited: Player, inviter: Player) {
@@ -87,38 +97,31 @@ class CrewHandler {
         invited.openInventory(requestInventory)
     }
 
-    fun testId(sender: Player) {
-        println("TEST TEST ${sender.name}")
-        println("TEST TEST ${crewId[sender.name]}")
-    }
-
     fun addPlayer(sender: Player, target: Player){
         val senderName = sender.name
-        val crewId = crewId[senderName]
+
+
+        val members = CrewHandler().getMembers(sender)
+
         //val members = crewMap[this.crewId[sender.name]]
 
         println("Inviter: $senderName")
         println("Invited: ${target.name}")
         println("Inviter CrewId: $crewId")
 
-        if (crewId != null) {
-            val members = crewMap[crewId]
-
-            if (members != null) {
-                val size = members.size.minus(1)
-                size.let { members.add(it, target.name) }
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
-                ScoreBoardHandler().updateScoreBoard(sender, members)
-                ScoreBoardHandler().updateAllMemberScoreBoard(members)
-            }
-        } else {
-            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Unable to add player. Crew information not found.")
+        if (members != null) {
+            val size = members.size.minus(1)
+            size.let { members.add(it, target.name) }
+            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
+            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} $members")
+            ScoreBoardHandler().refreshScoreboardAllMembers(members)
+            ScoreBoardHandler().updateAllMemberScoreBoard(members)
         }
     }
     fun removeCrew(sender: Player) {
-        val members = crewMap[crewId[sender.name]]
+        val members = CrewHandler().getMembers(sender)
+        ScoreBoardHandler().refreshScoreboardAllMembers(members)
         members?.clear()
-        ScoreBoardHandler().updateAllMemberScoreBoard(members)
         crewMap.remove(crewId[sender.name])
     }
 }
@@ -142,11 +145,12 @@ class CrewCommands : CommandExecutor {
             return false
         }
 
-        val crewMembers = crewHandler.getMembers(sender)
+
 
         if (args.contains("invite")) {
             if (args.size != 2) return true
             val playerName = args.get(index = 1)
+            val crewMembers = crewHandler.getMembers(sender)
             val target = Bukkit.getPlayer(playerName)
             if (target == null) {
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Player not found")
@@ -170,6 +174,7 @@ class CrewCommands : CommandExecutor {
         }
 
         if (args.contains("create")) {
+            val crewMembers = crewHandler.getMembers(sender)
             if (crewMembers?.contains(sender.name) == true) {
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are in a group please delete it first")
                 return false
@@ -182,11 +187,13 @@ class CrewCommands : CommandExecutor {
             return true
         }
         if (args.contains("delete")) {
-            if (crewMembers?.contains(sender.name) == true) {
+            val members = crewHandler.getMembers(sender)
+            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members $members")
+            if (members?.contains(sender.name) == true) {
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Crew has been deleted")
                 crewHandler.removeCrew(sender)
             } else {
-                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are not in a crew")
+                    sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are not in a crew")
             }
         }
 
