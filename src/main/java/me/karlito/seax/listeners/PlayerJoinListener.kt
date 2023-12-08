@@ -1,6 +1,7 @@
 package me.karlito.seax.listeners
 
 import me.karlito.seax.crew.CrewHandler
+import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.datastore.DatabaseUtils
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -15,8 +16,8 @@ class PlayerJoinListener : Listener {
     fun inJoin(e: PlayerJoinEvent) {
         val player = e.player
         val members = CrewHandler().getMembers(player)
-        //ScoreBoardHandler().createScoreBoard(e.player)
-        //if the player is new, add them to the database
+        ScoreBoardHandler().createScoreBoard(e.player)
+
         if (!e.player.hasPlayedBefore()) {
             //add the player to the database
             DatabaseUtils().addPlayerData(e.player)

@@ -34,8 +34,8 @@ class CrewHandler {
         members.add(0, player.name)
         crewMap[crewId] = members
         this.crewId[player.name] = crewId
-        //println("THE CREW ID ${this.crewId[player.name]}")
-        //println("THE CREWS $crewMap")
+        println("THE CREW ID ${this.crewId[player.name]}")
+        println("THE CREWS $crewMap")
 
         ScoreBoardHandler().updateAllMemberScoreBoard(members)
 
