@@ -1,15 +1,20 @@
 package me.karlito.seax
 
-import me.karlito.seax.commands.*
+import me.karlito.seax.commands.DashCommand
+import me.karlito.seax.commands.IaGui
+import me.karlito.seax.commands.IronAxe
 import me.karlito.seax.crew.CrewCommands
 import me.karlito.seax.crew.InventoryClickListenerInvite
 import me.karlito.seax.datastore.DatabaseUtils
-import me.karlito.seax.gui.SMgui
 import me.karlito.seax.itemsystem.InteractEvent
 import me.karlito.seax.listeners.InventoryClickListener
 import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.PlayerJoinListener
+import me.karlito.seax.npcs.NpcHandler
+import me.karlito.seax.trading_companies.gui.SMgui
+import me.karlito.seax.trading_companies.selling.NpcInteract
 import org.bukkit.Bukkit
+import org.bukkit.entity.Entity
 import org.bukkit.inventory.Inventory
 import org.bukkit.plugin.java.JavaPlugin
 import java.sql.Connection
@@ -25,12 +30,16 @@ class SeaX : JavaPlugin() {
         val inviteMap = HashMap<String, String>()
         val crewMap: MutableMap<UUID, MutableList<String>> = mutableMapOf()
         var connection : Connection? = null
+        val attachedEntities : MutableMap<String, Entity> = mutableMapOf()
+
     }
 
     override fun onEnable() {
         logger.info("The Seas Are Now Safe")
         registercommands()
         registerlisteners()
+
+        NpcHandler().createNpcs()
 
         val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"
         val user = "vjywbb4nphu4f81wxu5m"
@@ -67,8 +76,6 @@ class SeaX : JavaPlugin() {
         getCommand("dash")?.setExecutor(DashCommand())
         getCommand("testgui")?.setExecutor(IaGui())
         getCommand("defGui")?.setExecutor(SMgui())
-        getCommand("getcoins")?.setExecutor(GetCoinsCommand())
-        getCommand("setcoins")?.setExecutor(SetCoinsCommand())
         getCommand("crew")?.setExecutor(CrewCommands())
 
         logger.info("Registered Commands")
@@ -80,11 +87,13 @@ class SeaX : JavaPlugin() {
         Bukkit.getServer().pluginManager.registerEvents(InventoryClickListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(PlayerJoinListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(InteractEvent(), this)
+        Bukkit.getServer().pluginManager.registerEvents(NpcInteract(), this)
         //Bukkit.getServer().pluginManager.registerEvents(MythicSpawnListener(), this)
 
         logger.info("Registered Event Listeners")
     }
     override fun onDisable() {
+        NpcHandler().removeNpcs()
         logger.info("The Seas Are Down ")
         try {
             DatabaseUtils().closeConnection()

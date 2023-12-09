@@ -1,4 +1,4 @@
-package me.karlito.seax.voyages
+package me.karlito.seax.trading_companies.voyages
 
 import com.connorlinfoot.titleapi.TitleAPI
 import me.karlito.seax.datastore.DatabaseUtils

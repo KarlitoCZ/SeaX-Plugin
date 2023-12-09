@@ -121,7 +121,7 @@ class CrewHandler {
     fun removeCrew(sender: Player) {
         val members = CrewHandler().getMembers(sender)
         ScoreBoardHandler().refreshScoreboardAllMembers(members)
-        members?.clear()
+        members?.remove(sender.name)
         crewMap.remove(crewId[sender.name])
     }
 }
@@ -161,12 +161,12 @@ class CrewCommands : CommandExecutor {
                     sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} is already in the crew")
                     return true
                 }
-                crewHandler.addPlayer(sender, target)
+                //crewHandler.addPlayer(sender, target)
                 //sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Invite send to ${target.name}")
+                crewHandler.guiRequest(target, sender)
                 return true
 
             } else {
-                sender.sendMessage("$crewMembers MEMBERS")
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are not in a crew, cannot invite")
             }
 
@@ -188,7 +188,6 @@ class CrewCommands : CommandExecutor {
         }
         if (args.contains("delete")) {
             val members = crewHandler.getMembers(sender)
-            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Members $members")
             if (members?.contains(sender.name) == true) {
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Crew has been deleted")
                 crewHandler.removeCrew(sender)
@@ -207,8 +206,8 @@ class InventoryClickListenerInvite : Listener {
     fun inventorClickEventInvite(event: InventoryClickEvent) {
         val player = event.whoClicked as Player
         val playerUUID = event.whoClicked.uniqueId
-        //inviteMap[player.name] ?: return
-        val inviter = inviteMap[player.name]!!
+        val inviterName = inviteMap[player.name]!!
+        val inviter = Bukkit.getPlayerExact(inviterName)
         println(inviter)
 
 
@@ -217,10 +216,13 @@ class InventoryClickListenerInvite : Listener {
             if(event.currentItem?.itemMeta?.hasCustomModelData() == true) {
                 when(event.currentItem?.itemMeta?.customModelData) {
                     3565 -> {
+                        if (inviter != null) {
                         event.isCancelled = true
-                        //CrewHandler().testId(inviter)
+                        CrewHandler().addPlayer(inviter, player)
                         if(inviteMap.containsKey(player.name)) inviteMap.remove(player.name)
                         event.clickedInventory?.close()
+                        }
+                        event.isCancelled = true
                     }
                     3566 -> {
                         event.isCancelled = true

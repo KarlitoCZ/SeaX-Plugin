@@ -1,7 +1,7 @@
 package me.karlito.seax.listeners
 
 import me.karlito.seax.SeaX
-import me.karlito.seax.voyages.SMVoyages
+import me.karlito.seax.trading_companies.voyages.SMVoyages
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

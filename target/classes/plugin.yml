@@ -5,9 +5,7 @@ api-version: '1.19'
 
 # This sets PlaceholderAPI as an optional dependency for your plugin.
 softdepend: [PlaceholderAPI]
-depend:
-  - TitleAPI
-
+depend: [Citizens, TitleAPI]
 
 commands:
   IronAxe:

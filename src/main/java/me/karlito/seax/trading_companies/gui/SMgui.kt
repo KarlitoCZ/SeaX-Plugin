@@ -1,4 +1,4 @@
-package me.karlito.seax.gui
+package me.karlito.seax.trading_companies.gui
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
