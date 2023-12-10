@@ -3,6 +3,7 @@ package me.karlito.seax.itemsystem
 import io.lumine.mythic.bukkit.MythicBukkit
 import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.attachedEntities
+import me.karlito.seax.trading_companies.selling.SellSystem
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -15,8 +16,12 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class InteractEvent : Listener {
 
-    val lootArray = arrayOf("SunkenChest", "Skull") //entities that you can pick up (USE MYTHIC-MOB NAME)
     private val itemHoldHandler = ItemHoldHandler()
+    val lootMap = SellSystem.lootMap
+
+
+
+
 
 
     @EventHandler
@@ -26,9 +31,8 @@ class InteractEvent : Listener {
         val playerName = event.player.name
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
-        if (mythicMob != null && mythicMob.mobType in lootArray) {
+        if (mythicMob != null && lootMap.containsKey(mythicMob.mobType)) {
             if (!attachedEntities.containsKey(playerName)) {
-
                 itemHoldHandler.startTask(player, entity)
 
             }
