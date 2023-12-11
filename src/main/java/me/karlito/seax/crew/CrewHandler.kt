@@ -105,22 +105,33 @@ class CrewHandler {
 
         //val members = crewMap[this.crewId[sender.name]]
 
-        println("Inviter: $senderName")
-        println("Invited: ${target.name}")
-        println("Inviter CrewId: $crewId")
-
         if (members != null) {
             val size = members.size.minus(1)
             size.let { members.add(it, target.name) }
             sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} added!")
-            sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} $members")
-            ScoreBoardHandler().refreshScoreboardAllMembers(members)
+            ScoreBoardHandler().wipeAllMembersScoreboard(members)
+            ScoreBoardHandler().updateAllMemberScoreBoard(members)
+        }
+    }
+
+    fun removePlayer(player: Player){
+
+        val members = CrewHandler().getMembers(player)
+
+        if (members != null) {
+            if (members.size == 1) {
+                removeCrew(player)
+            }
+            val size = members.size.minus(1)
+            size.let { members.remove(player.name) }
+
+            ScoreBoardHandler().wipeAllMembersScoreboard(members)
             ScoreBoardHandler().updateAllMemberScoreBoard(members)
         }
     }
     fun removeCrew(sender: Player) {
         val members = CrewHandler().getMembers(sender)
-        ScoreBoardHandler().refreshScoreboardAllMembers(members)
+        ScoreBoardHandler().wipeAllMembersScoreboard(members)
         members?.remove(sender.name)
         crewMap.remove(crewId[sender.name])
     }

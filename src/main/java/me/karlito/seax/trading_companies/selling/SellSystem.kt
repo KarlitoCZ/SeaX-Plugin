@@ -22,18 +22,15 @@ class SellSystem {
     }
 
 
-    val itemHoldHandler = ItemHoldHandler()
-    fun sellLoot(player: Player) {
+    private val itemHoldHandler = ItemHoldHandler()
+    fun sellLoot(player: Player, com : String) {
 
         val members = CrewHandler().getMembers(player)
-        println("print1")
         val entity = attachedEntities[player.name]
-        println("print2 $entity, $members")
 
         if (members != null) { // sell loot send the coins to all the members of the crew
         } else { // sell loot send the coins only to that player
             if (entity != null) {
-                println("print3")
                 val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
                 itemHoldHandler.stopTask(player)
                 entity.remove()
@@ -55,12 +52,13 @@ class NpcInteract : Listener {
         val entity = event.rightClicked
         val player = event.player
         val playerName = event.player.name
+        val sm = "SkullMerchants"
 
         if (entity.hasMetadata("NPC")) {
             val npc = NMS.getNPC(entity)
             when (npc.name) {
                 "Seller" -> {
-                    SellSystem().sellLoot(player)
+                    SellSystem().sellLoot(player, sm)
                     println("Clicked the right npc")
                 }
             }

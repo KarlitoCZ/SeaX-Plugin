@@ -85,6 +85,14 @@ class ScoreBoardHandler {
 
     }
 
+    fun deleteScoreboard(player: Player) {
+
+            val manager = Bukkit.getScoreboardManager()
+            val newScoreboard = manager.mainScoreboard
+
+            player.scoreboard = newScoreboard
+    }
+
 
     fun createScoreBoard(player: Player) {
         val manager: ScoreboardManager = Bukkit.getScoreboardManager()
@@ -140,7 +148,7 @@ class ScoreBoardHandler {
         }
     }
 
-    fun refreshScoreboardAllMembers(members : MutableList<String>?) {
+    fun wipeAllMembersScoreboard(members: MutableList<String>?) {
 
         if (members != null) {
             deleteAllMemberScoreBoard(members)

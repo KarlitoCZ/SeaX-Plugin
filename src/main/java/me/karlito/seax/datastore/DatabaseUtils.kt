@@ -1,6 +1,8 @@
 package me.karlito.seax.datastore
 
 import me.karlito.seax.SeaX.Companion.connection
+import me.karlito.seax.crew.CrewHandler
+import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import org.bukkit.entity.Player
 import java.sql.SQLException
 
@@ -29,13 +31,9 @@ class DatabaseUtils {
             connection?.close()
         }
     }
-
-
-
-
         fun addPlayerData(player : Player) {
             if (connection != null) {
-            connection!!.prepareStatement("INSERT INTO players (uuid, username) VALUES (?, ?)").use { preparedStatement ->
+            connection!!.prepareStatement("INSERT IGNORE INTO players (uuid, username) VALUES (?, ?))").use { preparedStatement ->
                 preparedStatement.setString(1, player.uniqueId.toString())
                 preparedStatement.setString(2, player.name)
                 preparedStatement.executeUpdate()
@@ -57,6 +55,8 @@ class DatabaseUtils {
         // --- Update player stats functions
         @Throws(SQLException::class)
         fun updatePlayerCoins(player: Player, coins: Int) {
+            val scoreboard = ScoreBoardHandler()
+            val members = CrewHandler().getMembers(player)
             if (connection != null) {
             //if the player doesn't exist, add them
                 if (!playerExists(player)) {
@@ -67,11 +67,18 @@ class DatabaseUtils {
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
                 }
+                scoreboard.deleteScoreboard(player)
+                scoreboard.createScoreBoard(player)
+                if (members != null) {
+                    scoreboard.updateScoreBoard(player, members)
+                }
             }
         }
 
         @Throws(SQLException::class)
         fun updatePlayerSilver(player: Player, silver: Int) {
+            val scoreboard = ScoreBoardHandler()
+            val members = CrewHandler().getMembers(player)
             if (connection != null) {
                 //if the player doesn't exist, add them
                 if (!playerExists(player)) {
@@ -81,6 +88,11 @@ class DatabaseUtils {
                     preparedStatement.setInt(1, silver)
                     preparedStatement.setString(2, player.uniqueId.toString())
                     preparedStatement.executeUpdate()
+                }
+                scoreboard.deleteScoreboard(player)
+                scoreboard.createScoreBoard(player)
+                if (members != null) {
+                    scoreboard.updateScoreBoard(player, members)
                 }
             }
         }
