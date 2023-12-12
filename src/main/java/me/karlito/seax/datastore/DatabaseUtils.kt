@@ -3,6 +3,7 @@ package me.karlito.seax.datastore
 import me.karlito.seax.SeaX.Companion.connection
 import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
+import me.karlito.seax.levels.LevelCalculate
 import org.bukkit.entity.Player
 import java.sql.SQLException
 
@@ -98,11 +99,15 @@ class DatabaseUtils {
             if (!playerExists(player)) {
                 addPlayerData(player)
             }
-            connection!!.prepareStatement("UPDATE players SET sm_xp = ? WHERE uuid = ?").use { preparedStatement ->
-                preparedStatement.setInt(1, smExp)
-                preparedStatement.setString(2, player.uniqueId.toString())
-                preparedStatement.executeUpdate()
+            val currentXp = DatabaseUtils().getPlayerSMxp(player)
+            if (LevelCalculate.maxXp > currentXp) {
+                connection!!.prepareStatement("UPDATE players SET sm_xp = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, smExp)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
             }
+
         }
     }
 
@@ -113,10 +118,13 @@ class DatabaseUtils {
             if (!playerExists(player)) {
                 addPlayerData(player)
             }
-            connection!!.prepareStatement("UPDATE players SET st_xp = ? WHERE uuid = ?").use { preparedStatement ->
-                preparedStatement.setInt(1, stExp)
-                preparedStatement.setString(2, player.uniqueId.toString())
-                preparedStatement.executeUpdate()
+            val currentXp = DatabaseUtils().getPlayerSTxp(player)
+            if (LevelCalculate.maxXp > currentXp) {
+                connection!!.prepareStatement("UPDATE players SET st_xp = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, stExp)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
             }
         }
     }
@@ -128,10 +136,13 @@ class DatabaseUtils {
             if (!playerExists(player)) {
                 addPlayerData(player)
             }
-            connection!!.prepareStatement("UPDATE players SET wd_xp = ? WHERE uuid = ?").use { preparedStatement ->
-                preparedStatement.setInt(1, wdExp)
-                preparedStatement.setString(2, player.uniqueId.toString())
-                preparedStatement.executeUpdate()
+            val currentXp = DatabaseUtils().getPlayerWDxp(player)
+            if (LevelCalculate.maxXp > currentXp) {
+                connection!!.prepareStatement("UPDATE players SET wd_xp = ? WHERE uuid = ?").use { preparedStatement ->
+                    preparedStatement.setInt(1, wdExp)
+                    preparedStatement.setString(2, player.uniqueId.toString())
+                    preparedStatement.executeUpdate()
+                }
             }
         }
     }

@@ -32,7 +32,7 @@ class SMgui : CommandExecutor {
 
         val lorelevel1 = "${ChatColor.GOLD}Level : $smlevel"
 
-        val lorelevel2 = if (smlevel >= 20) {
+        val lorelevel2 = if (smlevel >= LevelCalculate.maxLvl) {
             "${ChatColor.GOLD}Remaining Xp : ${ChatColor.GREEN}${ChatColor.BOLD}MAX LEVEL"
 
         } else {

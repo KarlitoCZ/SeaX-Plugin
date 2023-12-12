@@ -14,7 +14,7 @@ class NpcHandler {
 
     fun createNpcs() {
 
-        val npc: NPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Seller")
+        val npc: NPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Skull Merchants")
         val world: World? = Bukkit.getWorld("world")
         val loc: Location = Location(world, 716.0, 64.0, 79.0)
 

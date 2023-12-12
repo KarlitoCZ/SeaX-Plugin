@@ -46,57 +46,59 @@ class ScoreBoardHandler {
 
 
         val score1: Score = objective.getScore(" ")
-        score1.score = 9
-        //val score2: Score = objective.getScore("${ChatColor.GOLD}⛃ Coins $coins")
-        //score2.score = 8
-        //val score3: Score = objective.getScore("${ChatColor.GRAY}⛃ Silver $silver")
-        //score3.score = 7
+        score1.score = 10
         val score4: Score = objective.getScore("")
-        score4.score = 6
+        score4.score = 7
         val score5: Score = objective.getScore("${ChatColor.BLUE}Crew :")
-        score5.score = 5
+        score5.score = 6
+
+        val score7: Score = objective.getScore("${ChatColor.YELLOW}")
+        score7.score = 1
+
+        val score6: Score = objective.getScore("${ChatColor.YELLOW}ᴡᴡᴡ.ѕᴇᴀ-х.ᴇᴜ")
+        score6.score = 0
 
         val team1: Team = scoreboard.registerNewTeam("team1")
         val teamKey = ChatColor.GOLD.toString()
         team1.addEntry(teamKey)
         team1.suffix = "${ChatColor.GOLD}⛃ Coins "
 
-        objective.getScore(teamKey).score = 8
+        objective.getScore(teamKey).score = 9
 
         val team2: Team = scoreboard.registerNewTeam("team2")
         val teamKey2 = ChatColor.WHITE.toString()
         team2.addEntry(teamKey2)
         team2.suffix = "${ChatColor.GRAY}⛃ Silver "
 
-        objective.getScore(teamKey2).score = 7
+        objective.getScore(teamKey2).score = 8
 
         val teamEmptySlot1: Team = scoreboard.registerNewTeam("teamEmptySlot1")
         val teamKeyEmptySlot1 = ChatColor.DARK_PURPLE.toString()
         teamEmptySlot1.addEntry(teamKeyEmptySlot1)
         teamEmptySlot1.suffix = "${ChatColor.BLUE}- Crew Slot 1 "
 
-        objective.getScore(teamKeyEmptySlot1).score = 4
+        objective.getScore(teamKeyEmptySlot1).score = 5
 
         val teamEmptySlot2: Team = scoreboard.registerNewTeam("teamEmptySlot2")
         val teamKeyEmptySlot2 = ChatColor.LIGHT_PURPLE.toString()
         teamEmptySlot2.addEntry(teamKeyEmptySlot2)
         teamEmptySlot2.suffix = "${ChatColor.BLUE}- Crew Slot 2 "
 
-        objective.getScore(teamKeyEmptySlot2).score = 3
+        objective.getScore(teamKeyEmptySlot2).score = 4
 
         val teamEmptySlot3: Team = scoreboard.registerNewTeam("teamEmptySlot3")
         val teamKeyEmptySlot3 = ChatColor.GREEN.toString()
         teamEmptySlot3.addEntry(teamKeyEmptySlot3)
         teamEmptySlot3.suffix = "${ChatColor.BLUE}- Crew Slot 3 "
 
-        objective.getScore(teamKeyEmptySlot3).score = 2
+        objective.getScore(teamKeyEmptySlot3).score = 3
 
         val teamEmptySlot4: Team = scoreboard.registerNewTeam("teamEmptySlot4")
         val teamKeyEmptySlot4 = ChatColor.DARK_RED.toString()
         teamEmptySlot4.addEntry(teamKeyEmptySlot4)
         teamEmptySlot4.suffix = "${ChatColor.BLUE}- Crew Slot 4 "
 
-        objective.getScore(teamKeyEmptySlot4).score = 1
+        objective.getScore(teamKeyEmptySlot4).score = 2
 
 
         player.scoreboard = scoreboard

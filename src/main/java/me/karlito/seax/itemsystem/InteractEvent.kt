@@ -54,9 +54,6 @@ class InteractEvent : Listener {
 
 class ItemHoldHandler() {
 
-    //private val plugin: Plugin
-
-
     val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
 
     private val task: MutableMap<String, BukkitRunnable> = mutableMapOf()
@@ -67,7 +64,6 @@ class ItemHoldHandler() {
 
 
         if (entity !in attachedEntities.values) {
-            println("$entity is not present in the map.")
             attachedEntities[player.name] = entity
 
             task[player.name] = object : BukkitRunnable() {
@@ -80,14 +76,11 @@ class ItemHoldHandler() {
             if (plugin != null) {
                 task[player.name]?.runTaskTimer(plugin, 0L, 1L)
             }
-        } else {
-            println("$entity is present in the map.")
         }
     }
 
     fun stopTask(player: Player) {
         task[player.name]?.cancel()
-        println("StopTask")
         SeaX.attachedEntities.remove(player.name)
     }
 

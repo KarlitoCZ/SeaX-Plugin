@@ -1,10 +1,16 @@
 package me.karlito.seax.levels
 
 class LevelCalculate {
+    companion object {
+        val maxLvl = 20
+        val maxXp = 1050
+    }
+
     fun calculateLevel(xp: Int): Pair<Int, Int> {
         if (xp < 0) {
             println("Err 0 or less cannot be a value")
         }
+
 
         val levelRequirements = mapOf(
             1 to 0,
@@ -26,7 +32,7 @@ class LevelCalculate {
             17 to 790,
             18 to 870,
             19 to 940,
-            20 to 1050
+            maxLvl to maxXp
             // Add more level requirements as needed
         )
 

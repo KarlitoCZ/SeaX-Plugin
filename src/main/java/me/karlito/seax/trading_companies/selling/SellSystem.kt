@@ -102,9 +102,8 @@ class NpcInteract : Listener {
         if (entity.hasMetadata("NPC")) {
             val npc = NMS.getNPC(entity)
             when (npc.name) {
-                "Seller" -> {
+                "Skull Merchants" -> {
                     SellSystem().sellLoot(player, sm)
-                    println("Clicked the right npc")
                 }
             }
         }
