@@ -4,41 +4,16 @@ import me.karlito.seax.datastore.DatabaseUtils
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scoreboard.*
 
 class ScoreBoardHandler {
-
-    val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
-
-    private var task: BukkitRunnable? = null
-
-    fun updatingScoreboard() {
-
-        task = object : BukkitRunnable() {
-            override fun run() {
-                for (player: Player in Bukkit.getOnlinePlayers())
-                    if (player.scoreboard.getObjective("${ChatColor.GOLD}  ᴘɪʀᴀᴛᴇ ᴄʀᴀꜰᴛ  ") != null)
-                        updateBoard(player)
-                    else {
-                        createScoreBoard(player)
-                    }
-            }
-        }
-        if (plugin != null) {
-            task?.runTaskTimer(plugin, 0L, 3L)
-        }
-
-    }
-
-    fun stopUpdatingScoreboard(player: Player) {
-        task?.cancel()
-    }
 
 
     fun createScoreBoard(player: Player) {
         val manager: ScoreboardManager = Bukkit.getScoreboardManager()
         val scoreboard: Scoreboard = manager.newScoreboard
+        val coins = DatabaseUtils().getPlayerCoins(player)
+        val silver = DatabaseUtils().getPlayerSilver(player)
 
 
         val objective: Objective = scoreboard.registerNewObjective("${ChatColor.GOLD}  ᴘɪʀᴀᴛᴇ ᴄʀᴀꜰᴛ  ", "placeholder")
@@ -61,14 +36,14 @@ class ScoreBoardHandler {
         val team1: Team = scoreboard.registerNewTeam("team1")
         val teamKey = ChatColor.GOLD.toString()
         team1.addEntry(teamKey)
-        team1.suffix = "${ChatColor.GOLD}⛃ Coins "
+        team1.suffix = "${ChatColor.GOLD}⛃ Coins $coins"
 
         objective.getScore(teamKey).score = 9
 
         val team2: Team = scoreboard.registerNewTeam("team2")
         val teamKey2 = ChatColor.WHITE.toString()
         team2.addEntry(teamKey2)
-        team2.suffix = "${ChatColor.GRAY}⛃ Silver "
+        team2.suffix = "${ChatColor.GRAY}⛃ Silver $silver"
 
         objective.getScore(teamKey2).score = 8
 

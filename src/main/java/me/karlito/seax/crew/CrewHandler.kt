@@ -12,6 +12,7 @@ import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -151,6 +152,7 @@ class CrewCommands : CommandExecutor {
                 /crew create
                 /crew invite
                 /crew delete
+                /crew leave
             """.trimIndent()
             )
             return false
@@ -184,7 +186,19 @@ class CrewCommands : CommandExecutor {
 
         }
 
+        if (args.contains("leave")) {
+            if (args.size != 1) return true
+            val members = crewHandler.getMembers(sender)
+            if (members != null) {
+                crewHandler.removePlayer(sender)
+            } else {
+                sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are not in a crew, cannot leave")
+            }
+
+        }
+
         if (args.contains("create")) {
+            if (args.size != 1) return true
             val crewMembers = crewHandler.getMembers(sender)
             if (crewMembers?.contains(sender.name) == true) {
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} You are in a group please delete it first")
@@ -198,6 +212,7 @@ class CrewCommands : CommandExecutor {
             return true
         }
         if (args.contains("delete")) {
+            if (args.size != 1) return true
             val members = crewHandler.getMembers(sender)
             if (members?.contains(sender.name) == true) {
                 sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Crew has been deleted")
@@ -246,6 +261,35 @@ class InventoryClickListenerInvite : Listener {
         }
 
     }
+}
+
+class CrewCommandTabCompletion : TabCompleter {
+
+    override fun onTabComplete(p0: CommandSender, p1: Command, p2: String, args: Array<out String>): MutableList<String>? {
+
+        if (args.size == 1 ) {
+            val tab = arrayListOf<String>().toMutableList()
+            tab.add("invite")
+            tab.add("delete")
+            tab.add("leave")
+            tab.add("create")
+            return tab
+        }
+
+        if (args.size == 2 ) {
+            if (args[0] == "invite") {
+                val players = Bukkit.getOnlinePlayers().toMutableList()
+                val playerNames = arrayListOf<String>().toMutableList()
+                for (player in players) {
+                    playerNames.add(player.name)
+                }
+                return playerNames
+            }
+        }
+
+        return null
+    }
+
 }
 
 

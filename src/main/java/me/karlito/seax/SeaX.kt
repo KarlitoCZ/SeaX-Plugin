@@ -3,9 +3,9 @@ package me.karlito.seax
 import me.karlito.seax.commands.DashCommand
 import me.karlito.seax.commands.IaGui
 import me.karlito.seax.commands.IronAxe
+import me.karlito.seax.crew.CrewCommandTabCompletion
 import me.karlito.seax.crew.CrewCommands
 import me.karlito.seax.crew.InventoryClickListenerInvite
-import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.itemsystem.InteractEvent
 import me.karlito.seax.listeners.InventoryClickListener
@@ -42,7 +42,6 @@ class SeaX : JavaPlugin() {
         registerlisteners()
 
         NpcHandler().createNpcs()
-        ScoreBoardHandler().updatingScoreboard()
 
         val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"
         val user = "vjywbb4nphu4f81wxu5m"
@@ -80,8 +79,10 @@ class SeaX : JavaPlugin() {
         getCommand("testgui")?.setExecutor(IaGui())
         getCommand("defGui")?.setExecutor(SMgui())
         getCommand("crew")?.setExecutor(CrewCommands())
+        getCommand("crew")?.tabCompleter = CrewCommandTabCompletion()
 
-        logger.info("Registered Commands")
+
+        logger.info("Registered Commands and Tab Completions")
     }
 
     private fun registerlisteners() {

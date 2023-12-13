@@ -105,6 +105,12 @@ class NpcInteract : Listener {
                 "Skull Merchants" -> {
                     SellSystem().sellLoot(player, sm)
                 }
+                "Whispering Dealers" -> {
+                    SellSystem().sellLoot(player, wd)
+                }
+                "Soul Traders" -> {
+                    SellSystem().sellLoot(player, st)
+                }
             }
         }
     }

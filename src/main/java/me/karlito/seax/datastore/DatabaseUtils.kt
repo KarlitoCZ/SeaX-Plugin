@@ -71,6 +71,7 @@ class DatabaseUtils {
                 preparedStatement.setInt(1, coins)
                 preparedStatement.setString(2, player.uniqueId.toString())
                 preparedStatement.executeUpdate()
+                ScoreBoardHandler().updateBoard(player)
             }
         }
     }
@@ -88,6 +89,7 @@ class DatabaseUtils {
                 preparedStatement.setInt(1, silver)
                 preparedStatement.setString(2, player.uniqueId.toString())
                 preparedStatement.executeUpdate()
+                ScoreBoardHandler().updateBoard(player)
             }
         }
     }
