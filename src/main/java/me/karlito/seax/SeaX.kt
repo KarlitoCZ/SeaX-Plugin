@@ -45,19 +45,24 @@ class SeaX : JavaPlugin() {
 
         NpcHandler().createNpcs()
 
-        val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"
-        val user = "vjywbb4nphu4f81wxu5m"
-        val pass = "pscale_pw_ucxIORienh18agRsfgL7YnktYr8j69xRroStpQy7l5T"
+        //val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"
+        //val user = "vjywbb4nphu4f81wxu5m"
+        //val pass = "pscale_pw_ucxIORienh18agRsfgL7YnktYr8j69xRroStpQy7l5T"
+
+        val url : String = config.get("database.url") as String
+        val user : String = config.get("database.user") as String
+        val pass : String = config.get("database.pass") as String
+
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver")
             connection = DriverManager.getConnection(url, user, pass)
-
+            if (connection != null) {
             logger.info("DATABASE $connection")
-
-
             DatabaseUtils().database()
-
+            } else {
+                logger.warning("Setup The Plugin SeaX")
+            }
         } catch (sqlException: Exception) {
             logger.warning("Exception $sqlException")
             Bukkit.getPluginManager().disablePlugin(this)
