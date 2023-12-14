@@ -41,6 +41,8 @@ class SeaX : JavaPlugin() {
         registercommands()
         registerlisteners()
 
+        saveDefaultConfig()
+
         NpcHandler().createNpcs()
 
         val url = "jdbc:mysql://aws.connect.psdb.cloud/seax-database?sslMode=VERIFY_IDENTITY"

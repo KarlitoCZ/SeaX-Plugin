@@ -232,16 +232,14 @@ class InventoryClickListenerInvite : Listener {
     fun inventorClickEventInvite(event: InventoryClickEvent) {
         val player = event.whoClicked as Player
         val playerUUID = event.whoClicked.uniqueId
-        val inviterName = inviteMap[player.name]!!
-        val inviter = Bukkit.getPlayerExact(inviterName)
-        println(inviter)
-
 
         if(event.inventory ==  SeaX.guiMap[playerUUID]) {
             if(event.currentItem == null) return
             if(event.currentItem?.itemMeta?.hasCustomModelData() == true) {
                 when(event.currentItem?.itemMeta?.customModelData) {
                     3565 -> {
+                        val inviterName = inviteMap[player.name]!!
+                        val inviter = Bukkit.getPlayerExact(inviterName)
                         if (inviter != null) {
                         event.isCancelled = true
                         CrewHandler().addPlayer(inviter, player)

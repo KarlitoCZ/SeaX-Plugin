@@ -1,0 +1,67 @@
+npc-settings:
+  world: "world" # The world that all npcs spawn in.
+  skull-merchants: # Where the Skull Merchant npc spawns. 4 available npcs, add more in the Source Code
+    cords1:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords2:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords3:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords4:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+
+  soul-traders: # Where the Soul Traders npc spawns. 4 available npcs, add more in the Source Code
+    cords1:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords2:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords3:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords4:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+
+  whispering-dealers: # Where the Whispering Dealers npc spawns. 4 available npcs, add more in the Source Code
+    cords1:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords2:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords3:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
+    cords4:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0
