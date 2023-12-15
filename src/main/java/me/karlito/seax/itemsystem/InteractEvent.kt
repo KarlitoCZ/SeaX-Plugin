@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable
 class InteractEvent : Listener {
 
     private val itemHoldHandler = ItemHoldHandler()
-    
+
     @EventHandler
     fun onInteractEntity(event: PlayerInteractAtEntityEvent) {
         val entity = event.rightClicked
@@ -54,9 +54,6 @@ class ItemHoldHandler() {
     private val task: MutableMap<String, BukkitRunnable> = mutableMapOf()
 
     fun startTask(player: Player, entity: Entity) {
-
-
-
 
         if (entity !in attachedEntities.values) {
             attachedEntities[player.name] = entity
