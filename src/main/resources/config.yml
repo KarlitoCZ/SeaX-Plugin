@@ -70,3 +70,15 @@ npc-settings:
       y: 0.0
       z: 0.0
       yaw: 0
+
+loot-table:
+  loot1: # Set this Mythic Mob Type (use - for spaces)
+    coins: 0 # How many coins will the player get?
+    silver: 0
+    xp: 0 # How many xp will the player get for set company
+    company: "" # st, sm, wd
+  loot2:
+    coins: 0
+    silver: 0
+    xp: 0
+    company: ""

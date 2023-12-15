@@ -8,6 +8,7 @@ import me.karlito.seax.itemsystem.ItemHoldHandler
 import net.citizensnpcs.util.NMS
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -16,18 +17,10 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent
 
 class SellSystem {
 
-    companion object {
-        val lootMap = mutableMapOf(
-            // coins, silver, xp
-            "Sunken-Chest" to Triple(500, 10, 30),
-            "Pirate-King-Fortune" to Triple(1000, 0, 50),
-
-            )
-    }
 
 
     private val itemHoldHandler = ItemHoldHandler()
-    fun sellLoot(player: Player, com: String) {
+    fun sellLoot(player: Player) {
 
         val members = CrewHandler().getMembers(player)
         val entity = attachedEntities[player.name]
@@ -35,46 +28,47 @@ class SellSystem {
         if (members != null) {
             for (member in members) {
                 val memberPl = Bukkit.getPlayer(member)!!
-                    sellPlayerLoot(entity, memberPl, com)
+                    sellPlayerLoot(entity, memberPl)
             }
 
         } else {
-            sellPlayerLoot(entity, player, com)
+            sellPlayerLoot(entity, player)
         }
     }
 
-    fun sellPlayerLoot(entity: Entity?, player: Player, com: String) {
+    fun sellPlayerLoot(entity: Entity?, player: Player) {
         if (entity != null) {
+            val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
+            val config : FileConfiguration = plugin!!.config
             val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
             itemHoldHandler.stopTask(player)
             entity.remove()
             val coins = DatabaseUtils().getPlayerCoins(player)
             val silver = DatabaseUtils().getPlayerSilver(player)
-            val xp = lootMap[mythicMob.mobType]?.third
-            val coinsValue = lootMap[mythicMob.mobType]?.first
-            val silverValue = lootMap[mythicMob.mobType]?.second
-            DatabaseUtils().updatePlayerCoins(player, coins + coinsValue!!)
-            DatabaseUtils().updatePlayerSilver(player, silver + silverValue!!)
+            val xp = config.get("loot-table.${mythicMob.mobType}.xp") as Int
+            val coinsValue = config.get("loot-table.${mythicMob.mobType}.coins") as Int
+            val silverValue = config.get("loot-table.${mythicMob.mobType}.silver") as Int
+            val com = config.get("loot-table.${mythicMob.mobType}.company").toString()
+            DatabaseUtils().updatePlayerCoins(player, coins + coinsValue)
+            DatabaseUtils().updatePlayerSilver(player, silver + silverValue)
             var prefix : String? = null
-            if (xp != null) {
-                when (com) {
-                    "SkullMerchants" -> {
-                        prefix = "${ChatColor.DARK_RED}${ChatColor.BOLD}[Skull Merchants]"
-                        val currentXP = DatabaseUtils().getPlayerSMxp(player)
-                        DatabaseUtils().updatePlayerSMxp(player, xp + currentXP)
-                    }
+            when (com) {
+                "sm" -> {
+                    prefix = "${ChatColor.DARK_RED}${ChatColor.BOLD}[Skull Merchants]"
+                    val currentXP = DatabaseUtils().getPlayerSMxp(player)
+                    DatabaseUtils().updatePlayerSMxp(player, xp + currentXP)
+                }
 
-                    "SoulTraders" -> {
-                        prefix = "${ChatColor.BLUE}${ChatColor.BOLD}[Soul Traders]"
-                        val currentXP = DatabaseUtils().getPlayerSTxp(player)
-                        DatabaseUtils().updatePlayerSTxp(player, xp + currentXP)
-                    }
+                "st" -> {
+                    prefix = "${ChatColor.BLUE}${ChatColor.BOLD}[Soul Traders]"
+                    val currentXP = DatabaseUtils().getPlayerSTxp(player)
+                    DatabaseUtils().updatePlayerSTxp(player, xp + currentXP)
+                }
 
-                    "WhisperingDealers" -> {
-                        prefix = "${ChatColor.DARK_PURPLE}${ChatColor.BOLD}[Whispering dealers]"
-                        val currentXP = DatabaseUtils().getPlayerWDxp(player)
-                        DatabaseUtils().updatePlayerWDxp(player, xp + currentXP)
-                    }
+                "wd" -> {
+                    prefix = "${ChatColor.DARK_PURPLE}${ChatColor.BOLD}[Whispering dealers]"
+                    val currentXP = DatabaseUtils().getPlayerWDxp(player)
+                    DatabaseUtils().updatePlayerWDxp(player, xp + currentXP)
                 }
             }
             attachedEntities.remove(player.name)
@@ -103,13 +97,13 @@ class NpcInteract : Listener {
             val npc = NMS.getNPC(entity)
             when (npc.name) {
                 "Skull Merchants" -> {
-                    SellSystem().sellLoot(player, sm)
+                    SellSystem().sellLoot(player)
                 }
                 "Whispering Dealers" -> {
-                    SellSystem().sellLoot(player, wd)
+                    SellSystem().sellLoot(player)
                 }
                 "Soul Traders" -> {
-                    SellSystem().sellLoot(player, st)
+                    SellSystem().sellLoot(player)
                 }
             }
         }

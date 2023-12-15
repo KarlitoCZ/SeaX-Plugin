@@ -3,8 +3,8 @@ package me.karlito.seax.itemsystem
 import io.lumine.mythic.bukkit.MythicBukkit
 import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.attachedEntities
-import me.karlito.seax.trading_companies.selling.SellSystem
 import org.bukkit.Bukkit
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -17,21 +17,17 @@ import org.bukkit.scheduler.BukkitRunnable
 class InteractEvent : Listener {
 
     private val itemHoldHandler = ItemHoldHandler()
-    val lootMap = SellSystem.lootMap
-
-
-
-
-
-
+    
     @EventHandler
     fun onInteractEntity(event: PlayerInteractAtEntityEvent) {
         val entity = event.rightClicked
         val player = event.player
         val playerName = event.player.name
+        val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
+        val config : FileConfiguration = plugin!!.config
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
-        if (mythicMob != null && lootMap.containsKey(mythicMob.mobType)) {
+        if (config.contains("loot-table.${mythicMob.mobType}")) {
             if (!attachedEntities.containsKey(playerName)) {
                 itemHoldHandler.startTask(player, entity)
 
@@ -46,7 +42,6 @@ class InteractEvent : Listener {
         val playerName = player.name
         if (event.isSneaking && attachedEntities.containsKey(playerName)) {
             val attachedEntity = attachedEntities[playerName]
-            //player.removePassenger(attachedEntity!!)
             itemHoldHandler.stopTask(player)
         }
     }
