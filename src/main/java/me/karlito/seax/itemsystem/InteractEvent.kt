@@ -24,15 +24,17 @@ class InteractEvent : Listener {
         val player = event.player
         val playerName = event.player.name
         val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
-        val config : FileConfiguration = plugin!!.config
+        val config: FileConfiguration = plugin!!.config
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
-        if (config.contains("loot-table.${mythicMob.mobType}")) {
-            if (!attachedEntities.containsKey(playerName)) {
-                itemHoldHandler.startTask(player, entity)
+        if (mythicMob != null) {
+            if (config.contains("loot-table.${mythicMob.mobType}")) {
+                if (!attachedEntities.containsKey(playerName)) {
+                    itemHoldHandler.startTask(player, entity)
+
+                }
 
             }
-
         }
     }
 
