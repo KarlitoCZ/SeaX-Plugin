@@ -1,6 +1,6 @@
 package me.karlito.seax.listeners
 
-import me.karlito.seax.SeaX
+import me.karlito.seax.SeaX.Companion.guiMap
 import me.karlito.seax.trading_companies.voyages.SMVoyages
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -14,10 +14,10 @@ class InventoryClickListener : Listener { // Used for voyage system
         val player = event.whoClicked as Player
         val playerUUID = event.whoClicked.uniqueId
 
-        if(event.inventory ==  SeaX.guiMap[playerUUID]) {
-            if(event.currentItem == null) return
-            if(event.currentItem!!.itemMeta.hasCustomModelData()) {
-                when(event.currentItem?.itemMeta?.customModelData) {
+        if (event.inventory == guiMap[playerUUID]) {
+            if (event.currentItem == null) return
+            if (event.currentItem!!.itemMeta.hasCustomModelData()) {
+                when (event.currentItem?.itemMeta?.customModelData) {
                     1788 -> {
                         event.isCancelled = true
                         SMVoyages().voyageEvent1(player)
@@ -27,7 +27,6 @@ class InventoryClickListener : Listener { // Used for voyage system
             }
             event.isCancelled = true
         }
-
     }
 }
 

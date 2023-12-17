@@ -14,11 +14,5 @@ commands:
     description: Push you forward.
   testgui:
     description: Test api with itemsadder.
-  defGui:
-    description: Test api with itemsadder but wraps the def. inventory.
-  getcoins:
-    description: Levels.
-  setcoins:
-    description: Levels.
   crew:
     description: Crew Create Invite

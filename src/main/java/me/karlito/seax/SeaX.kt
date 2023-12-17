@@ -13,7 +13,6 @@ import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.OnLeaveListener
 import me.karlito.seax.listeners.PlayerJoinListener
 import me.karlito.seax.npcs.NpcHandler
-import me.karlito.seax.trading_companies.gui.SMgui
 import me.karlito.seax.trading_companies.selling.NpcInteract
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
@@ -84,7 +83,6 @@ class SeaX : JavaPlugin() {
         getCommand("IronAxe")?.setExecutor(IronAxe())
         getCommand("dash")?.setExecutor(DashCommand())
         getCommand("testgui")?.setExecutor(IaGui())
-        getCommand("defGui")?.setExecutor(SMgui())
         getCommand("crew")?.setExecutor(CrewCommands())
         getCommand("crew")?.tabCompleter = CrewCommandTabCompletion()
 

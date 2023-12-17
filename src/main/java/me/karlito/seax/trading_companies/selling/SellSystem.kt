@@ -5,6 +5,7 @@ import me.karlito.seax.SeaX.Companion.attachedEntities
 import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.itemsystem.ItemHoldHandler
+import me.karlito.seax.trading_companies.gui.Guis
 import net.citizensnpcs.util.NMS
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -86,6 +87,7 @@ class NpcInteract : Listener {
     fun onInteractEntity(event: PlayerInteractAtEntityEvent) {
         val entity = event.rightClicked
         val player = event.player
+        val loot = attachedEntities[player.name]
         val playerName = event.player.name
         val sm = "SkullMerchants"
         val st = "SoulTraders"
@@ -93,6 +95,9 @@ class NpcInteract : Listener {
 
         if (entity.hasMetadata("NPC")) {
             val npc = NMS.getNPC(entity)
+            if (loot == null) {
+                Guis().openSMgui(player)
+            }
             when (npc.name) {
                 "Skull Merchants" -> {
                     SellSystem().sellLoot(player)
