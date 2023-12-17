@@ -13,6 +13,8 @@ import me.karlito.seax.listeners.InventoryCloseListener
 import me.karlito.seax.listeners.OnLeaveListener
 import me.karlito.seax.listeners.PlayerJoinListener
 import me.karlito.seax.npcs.NpcHandler
+import me.karlito.seax.safezones.MoveEvent
+import me.karlito.seax.safezones.SafeZones
 import me.karlito.seax.trading_companies.selling.NpcInteract
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
@@ -41,6 +43,9 @@ class SeaX : JavaPlugin() {
         registerlisteners()
 
         saveDefaultConfig()
+
+        SafeZones().addSafeZone("Area1", 10.0, 60.0, 20.0, 20.0, 70.0, 30.0)
+        SafeZones().addSafeZone("Area2", 30.0, 50.0, 40.0, 40.0, 60.0, 50.0)
 
         NpcHandler().createNpcs()
 
@@ -98,6 +103,7 @@ class SeaX : JavaPlugin() {
         Bukkit.getServer().pluginManager.registerEvents(InteractEvent(), this)
         Bukkit.getServer().pluginManager.registerEvents(NpcInteract(), this)
         Bukkit.getServer().pluginManager.registerEvents(OnLeaveListener(), this)
+        Bukkit.getServer().pluginManager.registerEvents(MoveEvent(), this)
         //Bukkit.getServer().pluginManager.registerEvents(MythicSpawnListener(), this)
 
         logger.info("Registered Event Listeners")

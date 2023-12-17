@@ -20,9 +20,11 @@ class ScoreBoardHandler {
         objective.displaySlot = DisplaySlot.SIDEBAR
 
 
-        val score1: Score = objective.getScore(" ")
-        score1.score = 10
-        val score4: Score = objective.getScore("")
+        val score1: Score = objective.getScore("     ")
+        score1.score = 12
+        val score9: Score = objective.getScore("   ")
+        score9.score = 9
+        val score4: Score = objective.getScore("  ")
         score4.score = 7
         val score5: Score = objective.getScore("${ChatColor.BLUE}Crew :")
         score5.score = 6
@@ -38,14 +40,21 @@ class ScoreBoardHandler {
         team1.addEntry(teamKey)
         team1.suffix = "${ChatColor.GOLD}⛃ Coins $coins"
 
-        objective.getScore(teamKey).score = 9
+        objective.getScore(teamKey).score = 11
 
         val team2: Team = scoreboard.registerNewTeam("team2")
         val teamKey2 = ChatColor.WHITE.toString()
         team2.addEntry(teamKey2)
         team2.suffix = "${ChatColor.GRAY}⛃ Silver $silver"
 
-        objective.getScore(teamKey2).score = 8
+        objective.getScore(teamKey2).score = 10
+
+        val team3: Team = scoreboard.registerNewTeam("team3")
+        val teamKey3 = ChatColor.DARK_BLUE.toString()
+        team3.addEntry(teamKey3)
+        team3.suffix = "Status ${ChatColor.RED}${ChatColor.BOLD}COMBAT"
+
+        objective.getScore(teamKey3).score = 8
 
         val teamEmptySlot1: Team = scoreboard.registerNewTeam("teamEmptySlot1")
         val teamKeyEmptySlot1 = ChatColor.DARK_PURPLE.toString()
@@ -88,6 +97,25 @@ class ScoreBoardHandler {
 
         team1?.setSuffix("${ChatColor.GOLD}⛃ Coins " + "$coins")
         team2?.setSuffix("${ChatColor.GRAY}⛃ Silver " + "$silver")
+    }
+
+    fun updateBoardSafeZone(player: Player, status : String) {
+        val scoreboard: Scoreboard = player.scoreboard
+        val team1 = scoreboard.getTeam("team3")
+
+        when (status) {
+            "☠ COMBAT" -> {
+                team1?.setSuffix("Status ${ChatColor.RED}${ChatColor.BOLD}$status")
+            }
+            "☮ SAFE ZONE" -> {
+                team1?.setSuffix("Status ${ChatColor.GREEN}${ChatColor.BOLD}$status")
+            }
+            else -> {
+                println("Status Provided does not match.")
+                team1?.setSuffix("Status ${ChatColor.DARK_RED}${ChatColor.BOLD}ERROR 405")
+            }
+        }
+
     }
 
     fun updateBoardCrewList(player: Player, crewMembers: List<String>) {
