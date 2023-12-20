@@ -5,7 +5,7 @@ import me.karlito.seax.SeaX.Companion.attachedEntities
 import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.itemsystem.ItemHoldHandler
-import me.karlito.seax.trading_companies.gui.Guis
+import me.karlito.seax.gui.Guis
 import net.citizensnpcs.util.NMS
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor

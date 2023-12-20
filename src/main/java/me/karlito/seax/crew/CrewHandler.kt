@@ -4,6 +4,7 @@ import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.crewMap
 import me.karlito.seax.SeaX.Companion.inviteMap
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
+import me.karlito.seax.gui.Guis
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -62,6 +63,9 @@ class CrewHandler {
 
 
     fun guiRequest(invited: Player, inviter: Player) {
+
+        Guis().checkGui(invited)
+
         val inviterName = inviter.name
         val requestInventory = Bukkit.createInventory(
             invited,
