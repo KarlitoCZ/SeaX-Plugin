@@ -1,5 +1,7 @@
 package me.karlito.seax.crew
 
+import dev.lone.itemsadder.api.FontImages.FontImageWrapper
+import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
 import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.crewMap
 import me.karlito.seax.SeaX.Companion.inviteMap
@@ -72,6 +74,7 @@ class CrewHandler {
             27,
             Component.text("Invite from $inviterName").color(TextColor.color(0, 0, 0))
         )
+        val texture = FontImageWrapper("seax:invite_gui")
         // Yes Item
         val yesItem = ItemStack(Material.GREEN_CONCRETE)
         val yesMeta = yesItem.itemMeta
@@ -100,16 +103,12 @@ class CrewHandler {
 
 
         invited.openInventory(requestInventory)
+        TexturedInventoryWrapper.setPlayerInventoryTexture(invited, texture)
     }
 
     fun addPlayer(sender: Player, target: Player){
-        val senderName = sender.name
-
-
         val members = CrewHandler().getMembers(sender)
-
-        //val members = crewMap[this.crewId[sender.name]]
-
+        
         if (members != null) {
             val size = members.size.minus(1)
             size.let { members.add(it, target.name) }
@@ -178,8 +177,6 @@ class CrewCommands : CommandExecutor {
                     sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} ${target.name} is already in the crew")
                     return true
                 }
-                //crewHandler.addPlayer(sender, target)
-                //sender.sendMessage("${ChatColor.BLUE}[Crew System]${ChatColor.GOLD} Invite send to ${target.name}")
                 crewHandler.guiRequest(target, sender)
                 return true
 

@@ -30,7 +30,7 @@ class Guis {
         checkGui(sender)
 
         val smInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
-        val texture = FontImageWrapper("_iainternal:red_gui")
+        val texture = FontImageWrapper("seax:red_gui")
 
         // Level Item
         val level = ItemStack(Material.MAGMA_CREAM)
@@ -73,6 +73,34 @@ class Guis {
         sender.openInventory(smInventory)
         TexturedInventoryWrapper.setPlayerInventoryTexture(sender, texture)
 
+    }
+
+    fun openCompassGui(sender: Player) {
+
+        checkGui(sender)
+
+        val compassInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
+        val texture = FontImageWrapper("seax:compass_gui")
+
+        val compass = ItemStack(Material.MAGMA_CREAM)
+        val compassMeta = compass.itemMeta
+        val islandName = ""
+
+        val lore1 = "${ChatColor.GOLD}Click to navigate."
+
+        compassMeta.displayName(Component.text("${ChatColor.BLUE}${ChatColor.BOLD}{$islandName}"))
+
+        compassMeta.lore = listOf(lore1)
+
+        compassMeta.setCustomModelData(4693)
+        compass.itemMeta = compassMeta
+
+        compassInventory.setItem(1, compass)
+
+        guiMap[sender.uniqueId] = compassInventory
+
+        sender.openInventory(compassInventory)
+        TexturedInventoryWrapper.setPlayerInventoryTexture(sender, texture)
     }
 
 
