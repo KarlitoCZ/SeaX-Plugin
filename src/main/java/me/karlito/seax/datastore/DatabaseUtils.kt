@@ -5,6 +5,7 @@ import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.levels.LevelCalculate
 import org.bukkit.entity.Player
+import java.sql.ResultSet
 import java.sql.SQLException
 
 
@@ -49,11 +50,29 @@ class DatabaseUtils {
     @Throws(SQLException::class)
     fun playerExists(player: Player): Boolean {
 
-
         connection!!.prepareStatement("SELECT * FROM players WHERE uuid = ?").use { preparedStatement ->
             preparedStatement.setString(1, player.uniqueId.toString())
             val resultSet = preparedStatement?.executeQuery()
             return resultSet?.next() == true
+        }
+    }
+
+    @Throws(SQLException::class)
+    fun playerUsernameExists(player: Player) {
+        var resultSet: ResultSet? = null
+
+        connection!!.prepareStatement("SELECT * FROM players WHERE uuid = ? OR username = ?").use { preparedStatement ->
+            preparedStatement.setString(1, player.uniqueId.toString())
+            preparedStatement.setString(2, player.name)
+            resultSet = preparedStatement?.executeQuery()
+        }
+
+        connection!!.prepareStatement("UPDATE players SET username = ? WHERE uuid = ?").use { preparedStatement ->
+            preparedStatement.setString(1, player.name)
+            preparedStatement.setString(2, player.uniqueId.toString())
+            preparedStatement.executeUpdate()
+
+
         }
     }
 

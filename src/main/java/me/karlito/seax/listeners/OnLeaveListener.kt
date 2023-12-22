@@ -14,7 +14,10 @@ class OnLeaveListener : Listener{
         val itemHoldHandler = ItemHoldHandler()
         itemHoldHandler.stopTask(event.player)
         CrewHandler().removePlayer(event.player)
-
+        val item = event.player.inventory.getItem(8)
+        if (item != null) {
+            event.player.inventory.remove(item)
+        }
     }
 
 }

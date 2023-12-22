@@ -3,6 +3,7 @@ package me.karlito.seax.listeners
 import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.datastore.DatabaseUtils
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -24,7 +25,13 @@ class PlayerJoinListener : Listener {
             DatabaseUtils().addPlayerData(e.player)
         }
         val itemStack = ItemStack(Material.COMPASS, 1)
-        player.inventory.setItem(1, itemStack)
+        val itemMeta = itemStack.itemMeta
+        itemMeta.setCustomModelData(4867)
+        itemMeta.setDisplayName("${ChatColor.BLUE}$player's Compass")
+        itemStack.itemMeta = itemStack.itemMeta
+        player.inventory.setItem(8, itemStack)
+
+        DatabaseUtils().playerUsernameExists(player)
 
     }
 }

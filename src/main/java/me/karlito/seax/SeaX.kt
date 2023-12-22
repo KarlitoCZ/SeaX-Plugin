@@ -8,10 +8,7 @@ import me.karlito.seax.crew.CrewCommands
 import me.karlito.seax.crew.InventoryClickListenerInvite
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.itemsystem.InteractEvent
-import me.karlito.seax.listeners.InventoryClickListener
-import me.karlito.seax.listeners.InventoryCloseListener
-import me.karlito.seax.listeners.OnLeaveListener
-import me.karlito.seax.listeners.PlayerJoinListener
+import me.karlito.seax.listeners.*
 import me.karlito.seax.npcs.NpcHandler
 import me.karlito.seax.safezones.MoveEvent
 import me.karlito.seax.safezones.SafeZones
@@ -104,6 +101,7 @@ class SeaX : JavaPlugin() {
         Bukkit.getServer().pluginManager.registerEvents(NpcInteract(), this)
         Bukkit.getServer().pluginManager.registerEvents(OnLeaveListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(MoveEvent(), this)
+        Bukkit.getServer().pluginManager.registerEvents(ClickListener(), this)
         //Bukkit.getServer().pluginManager.registerEvents(MythicSpawnListener(), this)
 
         logger.info("Registered Event Listeners")
