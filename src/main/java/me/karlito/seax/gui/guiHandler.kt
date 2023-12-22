@@ -82,20 +82,20 @@ class Guis {
         val compassInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
         val texture = FontImageWrapper("seax:compass_gui")
 
-        val compass = ItemStack(Material.MAGMA_CREAM)
+        val compass = ItemStack(Material.MAP)
         val compassMeta = compass.itemMeta
         val islandName = ""
 
         val lore1 = "${ChatColor.GOLD}Click to navigate."
 
-        compassMeta.displayName(Component.text("${ChatColor.BLUE}${ChatColor.BOLD}{$islandName}"))
+        compassMeta.displayName(Component.text("${ChatColor.BLUE}${ChatColor.BOLD}$islandName"))
 
         compassMeta.lore = listOf(lore1)
 
         compassMeta.setCustomModelData(4693)
         compass.itemMeta = compassMeta
 
-        compassInventory.setItem(1, compass)
+        compassInventory.setItem(0, compass)
 
         guiMap[sender.uniqueId] = compassInventory
 

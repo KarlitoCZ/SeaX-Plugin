@@ -27,8 +27,8 @@ class PlayerJoinListener : Listener {
         val itemStack = ItemStack(Material.COMPASS, 1)
         val itemMeta = itemStack.itemMeta
         itemMeta.setCustomModelData(4867)
-        itemMeta.setDisplayName("${ChatColor.BLUE}$player's Compass")
-        itemStack.itemMeta = itemStack.itemMeta
+        itemMeta.setDisplayName("${ChatColor.BLUE}${player.name}'s Compass")
+        itemStack.itemMeta = itemMeta
         player.inventory.setItem(8, itemStack)
 
         DatabaseUtils().playerUsernameExists(player)

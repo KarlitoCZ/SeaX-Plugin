@@ -85,7 +85,12 @@ loot-table:
 
 islands:
   island1:
-    name: ""
+    name: "Island 1"
+    x: 0
+    y: 0
+    z: 0
+  island2:
+    name: "Island 2"
     x: 0
     y: 0
     z: 0
