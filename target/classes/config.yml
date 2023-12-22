@@ -82,3 +82,10 @@ loot-table:
     silver: 0
     xp: 0
     company: ""
+
+islands:
+  island1:
+    name: ""
+    x: 0
+    y: 0
+    z: 0
