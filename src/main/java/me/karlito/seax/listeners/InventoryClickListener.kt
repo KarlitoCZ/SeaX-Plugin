@@ -19,10 +19,12 @@ class InventoryClickListener : Listener { // Used for voyage system
         val playerUUID = event.whoClicked.uniqueId
         val item = event.currentItem
         val itemMeta = item!!.itemMeta
+        
 
-
-        if (itemMeta.hasCustomModelData() && itemMeta.customModelData == 4867) {
-            event.isCancelled = true
+        if (itemMeta != null) {
+            if (itemMeta.hasCustomModelData() && itemMeta.customModelData == 4867) {
+                event.isCancelled = true
+            }
         }
 
         if (event.inventory == guiMap[playerUUID]) {
