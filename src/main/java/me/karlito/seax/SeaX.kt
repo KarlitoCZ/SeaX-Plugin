@@ -102,6 +102,9 @@ class SeaX : JavaPlugin() {
         Bukkit.getServer().pluginManager.registerEvents(OnLeaveListener(), this)
         Bukkit.getServer().pluginManager.registerEvents(MoveEvent(), this)
         Bukkit.getServer().pluginManager.registerEvents(ClickListener(), this)
+        Bukkit.getServer().pluginManager.registerEvents(PlayerDeathListener(), this)
+        Bukkit.getServer().pluginManager.registerEvents(PlayerRespawnListener(), this)
+        Bukkit.getServer().pluginManager.registerEvents(PlayerTrowListener(), this)
         //Bukkit.getServer().pluginManager.registerEvents(MythicSpawnListener(), this)
 
         logger.info("Registered Event Listeners")

@@ -1,3 +1,5 @@
+world: "world"
+
 database:
   user: ""
   url: ""
@@ -86,11 +88,11 @@ loot-table:
 islands:
   island1:
     name: "Island 1"
-    x: 0
-    y: 0
-    z: 0
+    x: 0.0
+    y: 0.0
+    z: 0.0
   island2:
     name: "Island 2"
-    x: 0
-    y: 0
-    z: 0
+    x: 0.0
+    y: 0.0
+    z: 0.0

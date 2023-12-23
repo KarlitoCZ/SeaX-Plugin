@@ -77,25 +77,46 @@ class Guis {
 
     fun openCompassGui(sender: Player) {
 
+        val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
+        val config = plugin!!.config
+
         checkGui(sender)
 
         val compassInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
         val texture = FontImageWrapper("seax:compass_gui")
 
-        val compass = ItemStack(Material.MAP)
-        val compassMeta = compass.itemMeta
-        val islandName = ""
+        val islandsSection = config.getConfigurationSection("islands") ?: return
 
-        val lore1 = "${ChatColor.GOLD}Click to navigate."
+        var index = 0
 
-        compassMeta.displayName(Component.text("${ChatColor.BLUE}${ChatColor.BOLD}$islandName"))
+        for (islandName in islandsSection.getKeys(false)) {
+            val islandLocation = islandsSection.getConfigurationSection(islandName)
+            val name =  islandsSection.get("$islandName.name")
 
-        compassMeta.lore = listOf(lore1)
+            if ( islandLocation != null) {
+                val islandX = islandLocation.getInt("x")
+                val islandY = islandLocation.getInt("y")
+                val islandZ = islandLocation.getInt("z")
 
-        compassMeta.setCustomModelData(4693)
-        compass.itemMeta = compassMeta
+                val compass = ItemStack(Material.MAP)
+                val compassMeta = compass.itemMeta
 
-        compassInventory.setItem(0, compass)
+                val lore1 = "${ChatColor.GOLD}Click to navigate."
+
+                compassMeta.displayName(Component.text("${ChatColor.BLUE}${ChatColor.BOLD}$name"))
+
+                compassMeta.lore = listOf(lore1)
+
+                compassMeta.setCustomModelData(4693)
+                compass.itemMeta = compassMeta
+
+                compassInventory.setItem(index, compass)
+
+                index++
+            }
+        }
+
+
 
         guiMap[sender.uniqueId] = compassInventory
 
