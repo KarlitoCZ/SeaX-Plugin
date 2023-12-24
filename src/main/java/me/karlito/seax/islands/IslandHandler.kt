@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.ConfigurationSection
+import java.util.concurrent.ThreadLocalRandom
 
 
 class IslandHandler() {
@@ -36,6 +37,18 @@ class IslandHandler() {
         }
         return null
     }
+
+    fun pickRandomIsland(): String? {
+        val islands = config.getConfigurationSection("islands")?.getKeys(false) ?: return null
+
+        if (islands.isEmpty()) {
+            return null
+        }
+
+        val randomIsland = islands.elementAt(ThreadLocalRandom.current().nextInt(islands.size))
+        return randomIsland
+    }
+
 
 
 

@@ -33,7 +33,7 @@ class InventoryClickListener : Listener { // Used for voyage system
                 when (event.currentItem?.itemMeta?.customModelData) {
                     1788 -> {
                         event.isCancelled = true
-                        SMVoyages().voyageEvent1(player)
+                        SMVoyages().smVoyageEvent1(player)
                         event.clickedInventory?.close()
                     }
                     4693 -> {

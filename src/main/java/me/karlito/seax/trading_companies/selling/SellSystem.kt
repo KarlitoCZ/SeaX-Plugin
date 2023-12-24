@@ -4,8 +4,8 @@ import io.lumine.mythic.bukkit.MythicBukkit
 import me.karlito.seax.SeaX.Companion.attachedEntities
 import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.datastore.DatabaseUtils
-import me.karlito.seax.itemsystem.ItemHoldHandler
 import me.karlito.seax.gui.Guis
+import me.karlito.seax.itemsystem.ItemHoldHandler
 import net.citizensnpcs.util.NMS
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -53,19 +53,19 @@ class SellSystem {
             var prefix : String? = null
             when (com) {
                 "sm" -> {
-                    prefix = "${ChatColor.DARK_RED}${ChatColor.BOLD}[Skull Merchants]"
+                    prefix = "${ChatColor.DARK_RED}[Skull Merchants]"
                     val currentXP = DatabaseUtils().getPlayerSMxp(player)
                     DatabaseUtils().updatePlayerSMxp(player, xp + currentXP)
                 }
 
                 "st" -> {
-                    prefix = "${ChatColor.BLUE}${ChatColor.BOLD}[Soul Traders]"
+                    prefix = "${ChatColor.BLUE}[Soul Traders]"
                     val currentXP = DatabaseUtils().getPlayerSTxp(player)
                     DatabaseUtils().updatePlayerSTxp(player, xp + currentXP)
                 }
 
                 "wd" -> {
-                    prefix = "${ChatColor.DARK_PURPLE}${ChatColor.BOLD}[Whispering dealers]"
+                    prefix = "${ChatColor.DARK_PURPLE}[Whispering dealers]"
                     val currentXP = DatabaseUtils().getPlayerWDxp(player)
                     DatabaseUtils().updatePlayerWDxp(player, xp + currentXP)
                 }

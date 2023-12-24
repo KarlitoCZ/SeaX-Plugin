@@ -12,10 +12,13 @@ class PlayerTrowListener : Listener {
         val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
         val item = event.itemDrop.itemStack
 
-        val config = plugin!!.config
         val itemMeta = item.itemMeta
-        if (itemMeta.hasCustomModelData() && itemMeta.customModelData == 4867) {
-            event.isCancelled = true
+        if (itemMeta.hasCustomModelData()) {
+            when (itemMeta.customModelData) {
+                4867 -> {
+                    event.isCancelled = true
+                }
+            }
         }
 
 

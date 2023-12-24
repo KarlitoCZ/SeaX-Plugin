@@ -2,8 +2,8 @@ package me.karlito.seax.levels
 
 class LevelCalculate {
     companion object {
-        val maxLvl = 20
-        val maxXp = 1050
+        val maxLvl = 25
+        val maxXp = 1710
     }
 
     fun calculateLevel(xp: Int): Pair<Int, Int> {
@@ -32,8 +32,12 @@ class LevelCalculate {
             17 to 790,
             18 to 870,
             19 to 940,
+            20 to 1050,
+            21 to 1200,
+            22 to 1360,
+            23 to 1430,
+            24 to 1570,
             maxLvl to maxXp
-            // Add more level requirements as needed
         )
 
         val currentLevel = levelRequirements.entries.lastOrNull { xp >= it.value }?.key ?: 1

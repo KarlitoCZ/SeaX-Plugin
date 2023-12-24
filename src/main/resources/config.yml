@@ -91,8 +91,16 @@ islands:
     x: 0.0
     y: 0.0
     z: 0.0
+    voyageLootSpot: # Set the proximity where the voyage loot will spawn
+      x: 0.0
+      y: 0.0
+      z: 0.0
   island2:
     name: "Island 2"
     x: 0.0
     y: 0.0
     z: 0.0
+    voyageLootSpot:
+      x: 0.0
+      y: 0.0
+      z: 0.0
