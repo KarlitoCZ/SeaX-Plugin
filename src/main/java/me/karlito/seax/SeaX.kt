@@ -34,7 +34,7 @@ class SeaX : JavaPlugin() {
         val playerActiveVoyage : MutableMap<UUID, Boolean> = mutableMapOf()
         val playerStageVoyage : MutableMap<UUID, Int> = mutableMapOf()
         val crewActiveVoyage : MutableMap<MutableList<String>, Boolean> = mutableMapOf()
-        val crewStageVoyage : MutableMap<UUID, Int> = mutableMapOf()
+        val crewStageVoyage : MutableMap<MutableList<String>, Int> = mutableMapOf()
 
     }
 

@@ -7,7 +7,7 @@ database:
 
 npc-settings:
   world: "world" # The world that all npcs spawn in.
-  skull-merchants: # Where the Skull Merchant npc spawns. 4 available npcs, add more in the Source Code
+  skull-merchants: # Where the Skull Merchant npc spawns.
     cords1:
       x: 0.0
       y: 0.0
@@ -29,7 +29,7 @@ npc-settings:
       z: 0.0
       yaw: 0
 
-  soul-traders: # Where the Soul Traders npc spawns. 4 available npcs, add more in the Source Code
+  soul-traders:
     cords1:
       x: 0.0
       y: 0.0
@@ -51,7 +51,7 @@ npc-settings:
       z: 0.0
       yaw: 0
 
-  whispering-dealers: # Where the Whispering Dealers npc spawns. 4 available npcs, add more in the Source Code
+  whispering-dealers:
     cords1:
       x: 0.0
       y: 0.0
@@ -79,16 +79,18 @@ loot-table:
     silver: 0
     xp: 0 # How many xp will the player get for set company
     company: "" # st, sm, wd
+    voyageLevel: 1 # In what voyages will the loot spawn 0 - 5. 0 means that it doesn't appear in them
   loot2:
     coins: 0
     silver: 0
     xp: 0
     company: ""
+    voyageLevel: 1
 
 islands:
   island1:
     name: "Island 1"
-    x: 0.0
+    x: 0.0  # Values for the compass
     y: 0.0
     z: 0.0
     voyageLootSpot: # Set the proximity where the voyage loot will spawn

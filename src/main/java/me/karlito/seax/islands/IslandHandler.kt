@@ -38,7 +38,7 @@ class IslandHandler() {
         return null
     }
 
-    fun pickRandomIsland(): String? {
+    fun getRandomIsland(): String? {
         val islands = config.getConfigurationSection("islands")?.getKeys(false) ?: return null
 
         if (islands.isEmpty()) {
@@ -49,6 +49,21 @@ class IslandHandler() {
         return randomIsland
     }
 
+    fun printAllIslandsFromYAML() {
+        val islandsSection = config.getConfigurationSection("islands") ?: return
+
+        for (islandName in islandsSection.getKeys(false)) {
+            val islandLocation = islandsSection.getConfigurationSection(islandName)
+
+            if (islandLocation != null) {
+                val islandX = islandLocation.getDouble("x")
+                val islandY = islandLocation.getDouble("y")
+                val islandZ = islandLocation.getDouble("z")
+
+                println("Island Name: $islandName, Location: ($islandX, $islandY, $islandZ)")
+            }
+        }
+    }
 
 
 
