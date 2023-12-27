@@ -32,9 +32,10 @@ class SeaX : JavaPlugin() {
         var connection : Connection? = null
         val attachedEntities : MutableMap<String, Entity> = mutableMapOf()
         val playerActiveVoyage : MutableMap<UUID, Boolean> = mutableMapOf()
-        val playerStageVoyage : MutableMap<UUID, Int> = mutableMapOf()
+        val voyageLoot = mutableMapOf<UUID, MutableList<UUID>>()
         val crewActiveVoyage : MutableMap<MutableList<String>, Boolean> = mutableMapOf()
         val crewStageVoyage : MutableMap<MutableList<String>, Int> = mutableMapOf()
+        val crewVoyageLoot = mutableMapOf<MutableList<String>, MutableList<UUID>>()
 
     }
 
@@ -45,8 +46,7 @@ class SeaX : JavaPlugin() {
 
         saveDefaultConfig()
 
-        SafeZones().addSafeZone("Area1", 10.0, 60.0, 20.0, 20.0, 70.0, 30.0)
-        SafeZones().addSafeZone("Area2", 30.0, 50.0, 40.0, 40.0, 60.0, 50.0)
+        SafeZones().registerAllSafeZones()
 
         NpcHandler().createNpcs()
 

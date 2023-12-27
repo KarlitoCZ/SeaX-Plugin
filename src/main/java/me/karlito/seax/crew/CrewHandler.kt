@@ -25,7 +25,6 @@ import java.util.*
 
 class CrewHandler {
     val crewId: MutableMap<String, UUID> = mutableMapOf()
-    val crewLeader: MutableMap<String, String> = mutableMapOf()
 
     fun createCrew(player: Player): UUID? {
         crewMap.forEach { (_, members) ->

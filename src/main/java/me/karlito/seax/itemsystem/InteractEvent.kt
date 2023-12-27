@@ -3,7 +3,10 @@ package me.karlito.seax.itemsystem
 import io.lumine.mythic.bukkit.MythicBukkit
 import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.attachedEntities
+import me.karlito.seax.SeaX.Companion.voyageLoot
+import me.karlito.seax.crew.CrewHandler
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -25,15 +28,25 @@ class InteractEvent : Listener {
         val playerName = event.player.name
         val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
         val config: FileConfiguration = plugin!!.config
+        val crewHandler = CrewHandler()
+        val members = crewHandler.getMembers(player)
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
         if (mythicMob != null) {
             if (config.contains("loot-table.${mythicMob.mobType}")) {
-                if (!attachedEntities.containsKey(playerName)) {
-                    itemHoldHandler.startTask(player, entity)
-
+                if (voyageLoot[player.uniqueId] != null ) {
+                    if (entity.uniqueId in voyageLoot[player.uniqueId]!!){
+                        if (!attachedEntities.containsKey(playerName)) {
+                            itemHoldHandler.startTask(player, entity)
+                        }
+                    } else {
+                        player.sendMessage("${ChatColor.RED}You can't pick this item up, This is part of a voyage")
+                    }
+                } else {
+                    if (!attachedEntities.containsKey(playerName)) {
+                        itemHoldHandler.startTask(player, entity)
+                    }
                 }
-
             }
         }
     }

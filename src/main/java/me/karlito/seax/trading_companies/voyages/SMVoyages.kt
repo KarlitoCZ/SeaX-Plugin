@@ -4,7 +4,7 @@ import com.connorlinfoot.titleapi.TitleAPI
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
 import me.karlito.seax.SeaX.Companion.playerActiveVoyage
-import me.karlito.seax.SeaX.Companion.playerStageVoyage
+import me.karlito.seax.SeaX.Companion.voyageLoot
 import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.islands.IslandHandler
@@ -13,6 +13,7 @@ import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
+import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.random.Random
 
@@ -35,6 +36,7 @@ class SMVoyages {
 
 
     }
+    
 
     fun randomizeLocation(x: Double, y: Double, z: Double): Location {
 
@@ -65,7 +67,6 @@ class SMVoyages {
             } else {
                 if (playerActiveVoyage[player.uniqueId] == null) {
                     playerActiveVoyage[player.uniqueId] = true
-                    playerStageVoyage[player.uniqueId] = 1
                     val finalCost = playerCoins - 300
                     DatabaseUtils().updatePlayerCoins(player, finalCost)
                     val title = "§6Voyage Started"
@@ -88,18 +89,18 @@ class SMVoyages {
                         val lootLevel = config.getInt("loot-table.$lootSectionString.voyageLevel")
 
                         if (lootLevel == 1) {
-                            println("Spawning")
+                            println("Spawning $i, $lootSectionString")
                             val lootLocation = randomizeLocation(x, y, z)
                             val mob = MythicBukkit.inst().mobManager.getMythicMob("$lootSectionString").orElse(null)
                             if (mob != null) {
                                 val loot = mob.spawn(BukkitAdapter.adapt(lootLocation), 1.0)
-                                println("Spawned")
-                                val entity = loot.entity.bukkitEntity
+                                println("Spawned $i")
+                                val lootList = mutableListOf<UUID>()
+                                lootList.add(loot.uniqueId)
+                                voyageLoot[player.uniqueId] = lootList
                             }
                         }
                     }
-
-
                 } else {
                     player.sendMessage("${ChatColor.RED}You are on a voyage right now!")
                 }
@@ -111,10 +112,36 @@ class SMVoyages {
 
     }
 
-    fun voyageCancel(player: Player) {
+    fun voyageFinish(player: Player) {
+        val crewHandler = CrewHandler()
+        val members = crewHandler.getMembers(player)
+        if (members != null) {
 
+        } else {
+            voyageLoot.remove(player.uniqueId)
+            playerActiveVoyage.remove(player.uniqueId)
+            val title = "§6Voyage Finished"
+            val subtitle = "Go and sell your loot or go exploring."
+            TitleAPI.sendTitle(player, 20, 50, 20, title, subtitle)
+        }
     }
-
+    
+    fun voyageCancel(player: Player) {
+        val crewHandler = CrewHandler()
+        val members = crewHandler.getMembers(player)
+        if (members != null) {
+            // TO DO
+        } else {
+            if (voyageLoot[player.uniqueId] != null) {
+                for (loot in voyageLoot[player.uniqueId]!!) {
+                    val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(loot).orElse(null)
+                    mythicMob.despawn()
+                }
+                voyageLoot.remove(player.uniqueId)
+                playerActiveVoyage.remove(player.uniqueId)
+            }
+        }
+    }
 }
 
 

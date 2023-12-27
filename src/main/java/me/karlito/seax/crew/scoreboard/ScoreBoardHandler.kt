@@ -52,7 +52,7 @@ class ScoreBoardHandler {
         val team3: Team = scoreboard.registerNewTeam("team3")
         val teamKey3 = ChatColor.DARK_BLUE.toString()
         team3.addEntry(teamKey3)
-        team3.suffix = "Status ${ChatColor.RED}${ChatColor.BOLD}COMBAT"
+        team3.suffix = "Status ${ChatColor.RED}⚔ COMBAT"
 
         objective.getScore(teamKey3).score = 8
 
@@ -104,11 +104,11 @@ class ScoreBoardHandler {
         val team1 = scoreboard.getTeam("team3")
 
         when (status) {
-            "☠ COMBAT" -> {
-                team1?.setSuffix("Status ${ChatColor.RED}${ChatColor.BOLD}$status")
+            "⚔ COMBAT" -> {
+                team1?.setSuffix("Status ${ChatColor.RED}$status")
             }
             "☮ SAFE ZONE" -> {
-                team1?.setSuffix("Status ${ChatColor.GREEN}${ChatColor.BOLD}$status")
+                team1?.setSuffix("Status ${ChatColor.GREEN}$status")
             }
             else -> {
                 println("Status Provided does not match.")

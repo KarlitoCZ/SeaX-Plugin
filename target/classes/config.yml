@@ -106,3 +106,13 @@ islands:
       x: 0.0
       y: 0.0
       z: 0.0
+
+safezones:
+  safezone1:
+    name: "BEST SAFEZONE EVER"
+    min-x: 0.0
+    min-y: 0.0
+    min-z: 0.0
+    max-x: 0.0
+    max-y: 0.0
+    max-z: 0.0
