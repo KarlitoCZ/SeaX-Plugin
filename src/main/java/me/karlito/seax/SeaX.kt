@@ -32,10 +32,9 @@ class SeaX : JavaPlugin() {
         var connection : Connection? = null
         val attachedEntities : MutableMap<String, Entity> = mutableMapOf()
         val playerActiveVoyage : MutableMap<UUID, Boolean> = mutableMapOf()
-        val voyageLoot = mutableMapOf<UUID, MutableList<UUID>>()
+        val voyageLoot: MutableMap<UUID, MutableList<UUID>> = mutableMapOf()
         val crewActiveVoyage : MutableMap<MutableList<String>, Boolean> = mutableMapOf()
-        val crewStageVoyage : MutableMap<MutableList<String>, Int> = mutableMapOf()
-        val crewVoyageLoot = mutableMapOf<MutableList<String>, MutableList<UUID>>()
+        val crewVoyageLoot : MutableMap<MutableList<String>, MutableList<UUID>> = mutableMapOf()
 
     }
 

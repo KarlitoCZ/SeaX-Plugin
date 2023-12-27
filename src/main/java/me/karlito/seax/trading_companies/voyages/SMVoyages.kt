@@ -80,24 +80,25 @@ class SMVoyages {
                     val z = config.getDouble("islands.$island.voyageLootSpot.z")
 
                     val lootNumber = Random.nextInt(3, 6)
-                    println(lootNumber)
                     // config.contains("loot-table.${mythicMob.mobType}"
                     for (i in 1..lootNumber) {
-                        println(i)
                         val lootSection = getRandomLootType()
                         val lootSectionString = lootSection?.name
                         val lootLevel = config.getInt("loot-table.$lootSectionString.voyageLevel")
 
                         if (lootLevel == 1) {
-                            println("Spawning $i, $lootSectionString")
                             val lootLocation = randomizeLocation(x, y, z)
                             val mob = MythicBukkit.inst().mobManager.getMythicMob("$lootSectionString").orElse(null)
                             if (mob != null) {
                                 val loot = mob.spawn(BukkitAdapter.adapt(lootLocation), 1.0)
-                                println("Spawned $i")
-                                val lootList = mutableListOf<UUID>()
-                                lootList.add(loot.uniqueId)
-                                voyageLoot[player.uniqueId] = lootList
+                                if (voyageLoot[player.uniqueId] == null) {
+                                    val lootList = mutableListOf<UUID>()
+                                    lootList.add(loot.uniqueId)
+                                    voyageLoot[player.uniqueId] = lootList
+                                } else {
+                                    val size = voyageLoot[player.uniqueId]!!.size.minus(1)
+                                    size.let { voyageLoot[player.uniqueId]!!.add(it, loot.uniqueId) }
+                                }
                             }
                         }
                     }

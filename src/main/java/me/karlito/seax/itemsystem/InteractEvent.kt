@@ -15,6 +15,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.scheduler.BukkitRunnable
+import java.util.*
 
 
 class InteractEvent : Listener {
@@ -22,33 +23,42 @@ class InteractEvent : Listener {
     private val itemHoldHandler = ItemHoldHandler()
 
     @EventHandler
-    fun onInteractEntity(event: PlayerInteractAtEntityEvent) {
+    fun onInteractEntity(event: PlayerInteractAtEntityEvent) : Boolean{
         val entity = event.rightClicked
         val player = event.player
         val playerName = event.player.name
         val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
         val config: FileConfiguration = plugin!!.config
         val crewHandler = CrewHandler()
+        val entityUUID : UUID = entity.uniqueId
         val members = crewHandler.getMembers(player)
 
-        val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entity.uniqueId).orElse(null)
+        val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entityUUID).orElse(null)
         if (mythicMob != null) {
             if (config.contains("loot-table.${mythicMob.mobType}")) {
-                if (voyageLoot[player.uniqueId] != null ) {
-                    if (entity.uniqueId in voyageLoot[player.uniqueId]!!){
-                        if (!attachedEntities.containsKey(playerName)) {
-                            itemHoldHandler.startTask(player, entity)
-                        }
-                    } else {
-                        player.sendMessage("${ChatColor.RED}You can't pick this item up, This is part of a voyage")
-                    }
+                if (members != null) {
+
                 } else {
+                    if (voyageLoot[player.uniqueId] != null) {
+                        if (entityUUID in voyageLoot[player.uniqueId]!!) {
+                            if (!attachedEntities.containsKey(playerName)) {
+                                itemHoldHandler.startTask(player, entity)
+                            }
+                        }
+                    }
+                }
+                val isUuidNotInAnyList = voyageLoot.values.all { entityUUID !in it }
+                if (isUuidNotInAnyList) {
                     if (!attachedEntities.containsKey(playerName)) {
                         itemHoldHandler.startTask(player, entity)
                     }
+                    return false
+                } else if (voyageLoot[player.uniqueId] == null) {
+                    player.sendMessage("${ChatColor.RED}You can't pick this item up, This is part of a voyage")
                 }
             }
         }
+        return true
     }
 
     @EventHandler

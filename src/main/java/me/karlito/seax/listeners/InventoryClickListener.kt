@@ -38,9 +38,9 @@ class InventoryClickListener : Listener { // Used for voyage system
                     }
                     4693 -> {
                         event.isCancelled = true
-                        val item = event.currentItem
-                        val itemMeta = item!!.itemMeta
-                        val itemDisplayName = itemMeta.displayName
+                        val itemh = event.currentItem
+                        val itemMetah = itemh!!.itemMeta
+                        val itemDisplayName = itemMetah.displayName
                         val itemName = ChatColor.stripColor(itemDisplayName)
                         if (itemName != null) {
                             val location = IslandHandler().findIslandByName(itemName)
