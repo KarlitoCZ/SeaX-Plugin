@@ -3,8 +3,11 @@ package me.karlito.seax.itemsystem
 import io.lumine.mythic.bukkit.MythicBukkit
 import me.karlito.seax.SeaX
 import me.karlito.seax.SeaX.Companion.attachedEntities
+import me.karlito.seax.SeaX.Companion.crewActiveVoyage
+import me.karlito.seax.SeaX.Companion.crewVoyageLoot
 import me.karlito.seax.SeaX.Companion.voyageLoot
 import me.karlito.seax.crew.CrewHandler
+import me.karlito.seax.trading_companies.voyages.VoyageHandler
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
@@ -36,13 +39,20 @@ class InteractEvent : Listener {
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entityUUID).orElse(null)
         if (mythicMob != null) {
             if (config.contains("loot-table.${mythicMob.mobType}")) {
-                if (members != null) {
+                if (members != null && crewActiveVoyage[members] != null) {
+                    if (entityUUID in crewVoyageLoot[members]!!) {
+                        if (!attachedEntities.containsKey(playerName)) {
+                            itemHoldHandler.startTask(player, entity)
+                            VoyageHandler().voyageFinish(player)
+                        }
+                    }
 
                 } else {
                     if (voyageLoot[player.uniqueId] != null) {
                         if (entityUUID in voyageLoot[player.uniqueId]!!) {
                             if (!attachedEntities.containsKey(playerName)) {
                                 itemHoldHandler.startTask(player, entity)
+                                VoyageHandler().voyageFinish(player)
                             }
                         }
                     }
@@ -51,10 +61,11 @@ class InteractEvent : Listener {
                 if (isUuidNotInAnyList) {
                     if (!attachedEntities.containsKey(playerName)) {
                         itemHoldHandler.startTask(player, entity)
+
                     }
                     return false
                 } else if (voyageLoot[player.uniqueId] == null) {
-                    player.sendMessage("${ChatColor.RED}You can't pick this item up, This is part of a voyage")
+                    player.sendMessage("${ChatColor.RED}You can't pick this item up, wait until the voyage is finished")
                 }
             }
         }

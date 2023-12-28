@@ -14,17 +14,16 @@ class NpcHandler {
 
 
     fun createNpcs() {
-
         val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
-        val config : FileConfiguration = plugin!!.config
+        val config: FileConfiguration = plugin!!.config
         val world: World? = Bukkit.getWorld("${config.get("npc-settings.world")}")
 
 
         val npc: NPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Skull Merchants")
 
-        val x : Double = config.get("npc-settings.skull-merchants.cords1.x") as Double
-        val y : Double = config.get("npc-settings.skull-merchants.cords1.y") as Double
-        val z : Double = config.get("npc-settings.skull-merchants.cords1.z") as Double
+        val x: Double = config.get("npc-settings.skull-merchants.cords1.x") as Double
+        val y: Double = config.get("npc-settings.skull-merchants.cords1.y") as Double
+        val z: Double = config.get("npc-settings.skull-merchants.cords1.z") as Double
         val yaw = config.get("npc-settings.skull-merchants.cords1.yaw").toString().toFloat()
         val loc = Location(world, x, y, z, yaw, 0F)
 
@@ -40,10 +39,10 @@ class NpcHandler {
 
     fun removeNpcs() {
         val npcRegistry = CitizensAPI.getNPCRegistry()
-
-        for (npc in npcRegistry) {
-            npc.despawn()
-            npcRegistry.deregister(npc)
+        if (!npcRegistry.none()) {
+            for (npc in npcRegistry) {
+                npc.destroy()
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import me.karlito.seax.SeaX.Companion.crewMap
 import me.karlito.seax.SeaX.Companion.inviteMap
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.gui.Guis
+import me.karlito.seax.trading_companies.voyages.VoyageHandler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -135,6 +136,7 @@ class CrewHandler {
     fun removeCrew(sender: Player) {
         val members = CrewHandler().getMembers(sender)
         ScoreBoardHandler().wipeAllMembersScoreboard(members)
+        VoyageHandler().voyageCancel(sender)
         members?.remove(sender.name)
         crewMap.remove(crewId[sender.name])
     }

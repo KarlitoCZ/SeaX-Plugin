@@ -116,3 +116,7 @@ safezones:
     max-x: 0.0
     max-y: 0.0
     max-z: 0.0
+
+mobs:
+  zombie: # Set this Mythic Mob Type
+    voyageLevel: 1  # In what voyages will the mob spawn 0 = WORLD EVENT

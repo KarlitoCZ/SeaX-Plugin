@@ -112,7 +112,7 @@ class ScoreBoardHandler {
             }
             else -> {
                 println("Status Provided does not match.")
-                team1?.setSuffix("Status ${ChatColor.DARK_RED}${ChatColor.BOLD}ERROR 405")
+                team1?.setSuffix("Status ${ChatColor.DARK_RED}${ChatColor.BOLD}ERROR 500")
             }
         }
 
