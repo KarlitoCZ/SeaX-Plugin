@@ -24,7 +24,7 @@ class SMVoyages {
 
     fun smVoyageEvent1(player: Player) { // Get the lost treasure
 
-        val island = IslandHandler().getRandomIsland()
+        val island = IslandHandler().getRandomIsland(1)
 
         val x = config.getDouble("islands.$island.voyageLootSpot.x")
         val y = config.getDouble("islands.$island.voyageLootSpot.y")

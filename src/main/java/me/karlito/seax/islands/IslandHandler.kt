@@ -38,7 +38,7 @@ class IslandHandler() {
         return null
     }
 
-    fun getRandomIsland(): String? {
+    fun getRandomIsland(level : Int): String? {
         val islands = config.getConfigurationSection("islands")?.getKeys(false) ?: return null
 
         if (islands.isEmpty()) {
@@ -46,7 +46,12 @@ class IslandHandler() {
         }
 
         val randomIsland = islands.elementAt(ThreadLocalRandom.current().nextInt(islands.size))
-        return randomIsland
+        val voyageLevel = config.getInt("islands.$randomIsland.voyageLevel")
+        return if (voyageLevel == 1) {
+            randomIsland
+        } else {
+            getRandomIsland(level)
+        }
     }
 
     fun printAllIslandsFromYAML() {

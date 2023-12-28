@@ -79,7 +79,7 @@ loot-table:
     silver: 0
     xp: 0 # How many xp will the player get for set company
     company: "" # st, sm, wd
-    voyageLevel: 1 # In what voyages will the loot spawn 0 - 5. 0 means that it doesn't appear in them
+    voyageLevel: 1 # In what voyages will the loot spawn 0 - 5. 0 = World Event
   loot2:
     coins: 0
     silver: 0
@@ -93,6 +93,7 @@ islands:
     x: 0.0  # Values for the compass
     y: 0.0
     z: 0.0
+    voyageLevel: 1
     voyageLootSpot: # Set the proximity where the voyage loot will spawn
       x: 0.0
       y: 0.0
@@ -102,6 +103,7 @@ islands:
     x: 0.0
     y: 0.0
     z: 0.0
+    voyageLevel: 1
     voyageLootSpot:
       x: 0.0
       y: 0.0
@@ -109,7 +111,7 @@ islands:
 
 safezones:
   safezone1:
-    name: "BEST SAFEZONE EVER"
+    name: "safeZone Name"
     min-x: 0.0
     min-y: 0.0
     min-z: 0.0
@@ -120,3 +122,13 @@ safezones:
 mobs:
   zombie: # Set this Mythic Mob Type
     voyageLevel: 1  # In what voyages will the mob spawn 0 = WORLD EVENT
+
+stores:
+  sm:
+    mysword:
+      gui_index: 0
+      price:
+        coins: 500
+        silver: 100
+  st:
+  wd:
