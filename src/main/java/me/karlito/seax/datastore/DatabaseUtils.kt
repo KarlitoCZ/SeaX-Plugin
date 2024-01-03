@@ -5,6 +5,7 @@ import me.karlito.seax.crew.CrewHandler
 import me.karlito.seax.crew.scoreboard.ScoreBoardHandler
 import me.karlito.seax.levels.LevelCalculate
 import org.bukkit.entity.Player
+import java.sql.ResultSet
 import java.sql.SQLException
 
 
@@ -23,7 +24,8 @@ class DatabaseUtils {
                                           silver int UNSIGNED NOT NULL DEFAULT 0,
                                           sm_xp int UNSIGNED NOT NULL DEFAULT 0,
                                           st_xp int UNSIGNED NOT NULL DEFAULT 0,
-                                          wd_xp int UNSIGNED NOT NULL DEFAULT 0
+                                          wd_xp int UNSIGNED NOT NULL DEFAULT 0,
+                                          items JSON
                                        );"""
         )
         statement?.close()
@@ -37,7 +39,7 @@ class DatabaseUtils {
 
     fun addPlayerData(player: Player) {
         if (connection != null) {
-            connection!!.prepareStatement("INSERT IGNORE INTO players (uuid, username) VALUES (?, ?))")
+            connection!!.prepareStatement("INSERT INTO players (uuid, username) VALUES (?, ?)")
                 .use { preparedStatement ->
                     preparedStatement.setString(1, player.uniqueId.toString())
                     preparedStatement.setString(2, player.name)
@@ -236,5 +238,31 @@ class DatabaseUtils {
         }
     }
 
+    //Items
+    fun hasPlayerStoreItem(player: Player, id: Int): Boolean {
 
+        connection?.prepareStatement("SELECT COUNT(*) FROM players WHERE uuid = ? AND JSON_UNQUOTE(JSON_EXTRACT(items, '\\\$[*]')) = ?;")
+            .use { preparedStatement ->
+                preparedStatement?.setString(1, player.uniqueId.toString())
+                preparedStatement?.setInt(2, id)
+                val resultSet: ResultSet = preparedStatement!!.executeQuery()
+
+                if (resultSet.next()) {
+                    val count = resultSet.getInt(1)
+                    return count > 0
+                }
+            }
+        return false
+    }
+
+    fun addItemToPlayer(playerUuid: String, newItem: Int) {
+
+        connection?.prepareStatement("UPDATE players SET items = JSON_ARRAY_APPEND(item, '$', ?) WHERE uuid = ?")
+            .use { preparedStatement ->
+                preparedStatement!!.setInt(1, newItem)
+                preparedStatement.setString(2, playerUuid)
+                preparedStatement.executeUpdate()
+
+            }
+    }
 }

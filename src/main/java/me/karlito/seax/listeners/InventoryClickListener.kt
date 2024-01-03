@@ -1,8 +1,12 @@
 package me.karlito.seax.listeners
 
+import dev.lone.itemsadder.api.ItemsAdder.getCustomItemName
 import me.karlito.seax.SeaX.Companion.guiMap
+import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.islands.IslandHandler
+import me.karlito.seax.levels.LevelCalculate
 import me.karlito.seax.trading_companies.voyages.SMVoyages
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -13,12 +17,20 @@ import org.bukkit.event.inventory.InventoryClickEvent
 
 class InventoryClickListener : Listener { // Used for voyage system
 
+    val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
+    val config = plugin!!.config
+
     @EventHandler
     fun inventorClickEvent(event: InventoryClickEvent) {
         val player = event.whoClicked as Player
         val playerUUID = event.whoClicked.uniqueId
         val item = event.currentItem
-        val itemMeta = item!!.itemMeta
+        val itemMeta = item?.itemMeta
+        val levelReq = config.getInt("voyages.voyage1.level")
+        val playerSMxp = DatabaseUtils().getPlayerSMxp(player)
+        val playerSTxp = DatabaseUtils().getPlayerSTxp(player)
+        val playerWDxp = DatabaseUtils().getPlayerWDxp(player)
+        val customItem = getCustomItemName(item)
         
 
         if (itemMeta != null) {
@@ -31,10 +43,14 @@ class InventoryClickListener : Listener { // Used for voyage system
             if (event.currentItem == null) return
             if (event.currentItem!!.itemMeta.hasCustomModelData()) {
                 when (event.currentItem?.itemMeta?.customModelData) {
+
                     1788 -> {
-                        event.isCancelled = true
-                        SMVoyages().smVoyageEvent1(player)
-                        event.clickedInventory?.close()
+                        val (currentLevel, remainingXpMax) = LevelCalculate().calculateLevel(playerSMxp)
+                        if (currentLevel >= levelReq) {
+                            event.isCancelled = true
+                            SMVoyages().smVoyageEvent1(player)
+                            event.clickedInventory?.close()
+                        }
                     }
                     4693 -> {
                         event.isCancelled = true
@@ -55,6 +71,9 @@ class InventoryClickListener : Listener { // Used for voyage system
                         }
                         event.clickedInventory?.close()
                     }
+                }
+                if (customItem != null) {
+                    
                 }
             }
             event.isCancelled = true

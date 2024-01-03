@@ -1,5 +1,9 @@
 package me.karlito.seax.listeners
 
+import me.karlito.seax.SeaX.Companion.crewActiveVoyage
+import me.karlito.seax.SeaX.Companion.playerActiveVoyage
+import me.karlito.seax.crew.CrewHandler
+import me.karlito.seax.trading_companies.voyages.VoyageHandler.Companion.voyageItemMap
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -20,6 +24,29 @@ class PlayerRespawnListener : Listener {
         itemMeta.setDisplayName("${ChatColor.BLUE}${player.name}'s Compass")
         itemStack.itemMeta = itemMeta
         player.inventory.setItem(8, itemStack)
+        val members = CrewHandler().getMembers(player)
+        val item = voyageItemMap[player.uniqueId]
+
+
+        if (crewActiveVoyage[members] != null) {
+            val inventory = player.inventory
+            for (i in 0 until inventory.size) {
+                if (inventory.getItem(i) == null || inventory.getItem(i)!!.type == Material.AIR) {
+                    inventory.setItem(i, item)
+                    break
+                }
+            }
+
+        } else if (playerActiveVoyage[player.uniqueId] != null) {
+            val inventory = player.inventory
+            for (i in 0 until inventory.size) {
+                if (inventory.getItem(i) == null || inventory.getItem(i)!!.type == Material.AIR) {
+                    inventory.setItem(i, item)
+                    break
+                }
+            }
+        }
+
 
     }
 

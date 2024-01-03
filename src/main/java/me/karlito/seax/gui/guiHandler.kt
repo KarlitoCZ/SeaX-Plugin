@@ -2,6 +2,7 @@ package me.karlito.seax.gui
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper
+import dev.lone.itemsadder.api.ItemsAdder.getCustomItem
 import me.karlito.seax.SeaX.Companion.guiMap
 import me.karlito.seax.datastore.DatabaseUtils
 import me.karlito.seax.levels.LevelCalculate
@@ -15,6 +16,9 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
 class Guis {
+
+    val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
+    val config = plugin!!.config
 
     fun checkGui(sender : Player) {
         if (guiMap[sender.uniqueId] != null)
@@ -31,6 +35,35 @@ class Guis {
 
         val smInventory = Bukkit.createInventory(sender, 27, Component.text("").color(TextColor.color(0, 0, 0)))
         val texture = FontImageWrapper("seax:red_gui")
+
+        // Store
+        val itemsSection = config.getConfigurationSection("stores.sm") ?: return
+        for (itemName in itemsSection.getKeys(false)) {
+            val item = itemsSection.getConfigurationSection(itemName)
+
+            if (item != null) {
+                val guiIndex = item.getInt("gui_index")
+                val id = item.getInt("id")
+                val coinsPrice = item.getInt("price.coins")
+                val silverPrice = item.getInt("price.silver")
+
+                val itemStack = getCustomItem("seax:$itemName")
+                val itemStackMeta = itemStack.itemMeta
+                val lore1 = "${ChatColor.GOLD}Coins : $coinsPrice"
+                val lore0 = ""
+                val lore2 = "${ChatColor.GRAY}Silver : $silverPrice"
+                val lore3 = if (DatabaseUtils().hasPlayerStoreItem(sender, id)) {
+                    "${ChatColor.GREEN}${ChatColor.BOLD}Purchased"
+                } else {
+                    "${ChatColor.GREEN}${ChatColor.BOLD}BUY"
+                }
+                itemStackMeta.lore = listOf(lore1, lore2, lore0, lore3)
+
+                itemStack.itemMeta = itemStackMeta
+                smInventory.setItem(guiIndex, itemStack)
+
+            }
+        }
 
         // Level Item
         val level = ItemStack(Material.MAGMA_CREAM)
@@ -54,13 +87,25 @@ class Guis {
         levelmeta.setCustomModelData(3487)
         level.itemMeta = levelmeta
 
-        // Buried treasure
+        // Voyage 1
         val voyage1 = ItemStack(Material.MAP)
+        val voyageName = config.getString("voyages.voyage1.name")
+        val costSilver = config.getInt("voyages.voyage1.costSilver")
+        val costCoins = config.getInt("voyages.voyage1.costCoins")
+        val levelReq = config.getInt("voyages.voyage1.level")
         val voyagemeta = voyage1.itemMeta
-        voyagemeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}Voyage for the buried treasure"))
-        val lore1 = "${ChatColor.GOLD}Go around the map and find buried loot"
-        val lore2 = "${ChatColor.GOLD}and return it to the Skull Merchants."
-        voyagemeta.lore = listOf(lore1, lore2)
+        voyagemeta.displayName(Component.text("${ChatColor.RED}${ChatColor.BOLD}$voyageName"))
+        val lore1 = "${ChatColor.GOLD}Level : $levelReq"
+        val lore2 = if (costSilver == 0) {
+            "${ChatColor.GOLD}Cost : $costCoins Coins"
+        } else if (costCoins != 0){
+            "${ChatColor.GOLD}Cost : $costCoins Coins, ${ChatColor.GRAY}$costSilver Silver"
+        } else {
+            "${ChatColor.GOLD}Cost : ${ChatColor.GRAY}$costSilver Silver"
+        }
+        val lore3 = ""
+        val lore4 = "${ChatColor.GOLD}Go to a random island and get the treasure."
+        voyagemeta.lore = listOf(lore1, lore2, lore3, lore4)
         voyagemeta.setCustomModelData(1788)
         voyage1.itemMeta = voyagemeta
 
@@ -76,9 +121,6 @@ class Guis {
     }
 
     fun openCompassGui(sender: Player) {
-
-        val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
-        val config = plugin!!.config
 
         checkGui(sender)
 

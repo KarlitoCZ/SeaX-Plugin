@@ -41,7 +41,8 @@ class NpcHandler {
         val npcRegistry = CitizensAPI.getNPCRegistry()
         if (!npcRegistry.none()) {
             for (npc in npcRegistry) {
-                npc.destroy()
+                npc.despawn()
+                npcRegistry.deregister(npc)
             }
         }
     }

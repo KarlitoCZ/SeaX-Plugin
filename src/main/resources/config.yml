@@ -127,8 +127,16 @@ stores:
   sm:
     mysword:
       gui_index: 0
+      id: 1
       price:
         coins: 500
         silver: 100
   st:
   wd:
+
+voyages:
+  voyage1:
+    level: 1
+    name: "The Great Voyage"
+    costSilver: 0
+    costCoins: 100

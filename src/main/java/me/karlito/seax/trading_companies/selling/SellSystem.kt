@@ -18,11 +18,15 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent
 
 class SellSystem {
 
+
+
     private val itemHoldHandler = ItemHoldHandler()
     fun sellLoot(player: Player) {
 
         val members = CrewHandler().getMembers(player)
         val entity = attachedEntities[player.name]
+        val playerId = player.uniqueId
+
 
         if (members != null) {
             for (member in members) {
@@ -83,30 +87,52 @@ class SellSystem {
 }
 
 class NpcInteract : Listener {
+
+    fun isOnCooldown(player: Player): Boolean {
+        val lastInteractionTime = cooldowns[player.name] ?: return false
+        val currentTime = System.currentTimeMillis()
+        val cooldownMillis = 1000 * 0.5
+
+        return currentTime - lastInteractionTime < cooldownMillis
+    }
+
+    fun setCooldown(player: Player, cooldownSeconds: Double) {
+        val cooldownDouble = cooldownSeconds.toLong()
+        cooldowns[player.name] = System.currentTimeMillis() + (cooldownDouble)
+    }
+
+    companion object {
+        val cooldowns = mutableMapOf<String, Long>()
+    }
     @EventHandler
     fun onInteractEntity(event: PlayerInteractAtEntityEvent) {
         val entity = event.rightClicked
+        val plugin = Bukkit.getPluginManager().getPlugin("SeaX")
         val player = event.player
         val loot = attachedEntities[player.name]
-        val playerName = event.player.name
-        val sm = "SkullMerchants"
-        val st = "SoulTraders"
-        val wd = "WhisperingDealers"
 
         if (entity.hasMetadata("NPC")) {
             val npc = NMS.getNPC(entity)
-            if (loot == null) {
-                Guis().openSMgui(player)
-            }
-            when (npc.name) {
-                "Skull Merchants" -> {
-                    SellSystem().sellLoot(player)
+            if (isOnCooldown(player)) {
+
+            } else {
+                val cooldownSeconds = 0.5
+                setCooldown(player, cooldownSeconds)
+
+                if (loot == null) {
+                    Guis().openSMgui(player)
+                    return
                 }
-                "Whispering Dealers" -> {
-                    SellSystem().sellLoot(player)
-                }
-                "Soul Traders" -> {
-                    SellSystem().sellLoot(player)
+                when (npc.name) {
+                    "Skull Merchants" -> {
+                        SellSystem().sellLoot(player)
+                    }
+                    "Whispering Dealers" -> {
+                        SellSystem().sellLoot(player)
+                    }
+                    "Soul Traders" -> {
+                        SellSystem().sellLoot(player)
+                    }
                 }
             }
         }

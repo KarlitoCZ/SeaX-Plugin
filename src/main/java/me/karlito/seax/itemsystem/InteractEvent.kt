@@ -23,10 +23,12 @@ import java.util.*
 
 class InteractEvent : Listener {
 
+
     private val itemHoldHandler = ItemHoldHandler()
 
+
     @EventHandler
-    fun onInteractEntity(event: PlayerInteractAtEntityEvent) : Boolean{
+    fun onInteractEntity(event: PlayerInteractAtEntityEvent) {
         val entity = event.rightClicked
         val player = event.player
         val playerName = event.player.name
@@ -35,6 +37,7 @@ class InteractEvent : Listener {
         val crewHandler = CrewHandler()
         val entityUUID : UUID = entity.uniqueId
         val members = crewHandler.getMembers(player)
+        val entityId = entity.uniqueId
 
         val mythicMob = MythicBukkit.inst().mobManager.getActiveMob(entityUUID).orElse(null)
         if (mythicMob != null) {
@@ -63,13 +66,12 @@ class InteractEvent : Listener {
                         itemHoldHandler.startTask(player, entity)
 
                     }
-                    return false
+                    return
                 } else if (voyageLoot[player.uniqueId] == null) {
                     player.sendMessage("${ChatColor.RED}You can't pick this item up, wait until the voyage is finished")
                 }
             }
         }
-        return true
     }
 
     @EventHandler
