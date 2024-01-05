@@ -46,9 +46,12 @@ class Guis {
                 val id = item.getInt("id")
                 val coinsPrice = item.getInt("price.coins")
                 val silverPrice = item.getInt("price.silver")
+                val level = item.getInt("level")
 
-                val itemStack = getCustomItem("seax:$itemName")
+                val itemStack = getCustomItem("seax:$itemName") ?: return
                 val itemStackMeta = itemStack.itemMeta
+                val lore4 = "${ChatColor.BLUE}Level : $level"
+                val lore5 = ""
                 val lore1 = "${ChatColor.GOLD}Coins : $coinsPrice"
                 val lore0 = ""
                 val lore2 = "${ChatColor.GRAY}Silver : $silverPrice"
@@ -57,7 +60,7 @@ class Guis {
                 } else {
                     "${ChatColor.GREEN}${ChatColor.BOLD}BUY"
                 }
-                itemStackMeta.lore = listOf(lore1, lore2, lore0, lore3)
+                itemStackMeta.lore = listOf(lore4, lore5, lore1, lore2, lore0, lore3)
 
                 itemStack.itemMeta = itemStackMeta
                 smInventory.setItem(guiIndex, itemStack)

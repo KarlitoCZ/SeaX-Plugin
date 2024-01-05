@@ -1,5 +1,6 @@
 package me.karlito.seax.listeners
 
+import dev.lone.itemsadder.api.ItemsAdder.getCustomItem
 import dev.lone.itemsadder.api.ItemsAdder.getCustomItemName
 import me.karlito.seax.SeaX.Companion.guiMap
 import me.karlito.seax.datastore.DatabaseUtils
@@ -30,8 +31,10 @@ class InventoryClickListener : Listener { // Used for voyage system
         val playerSMxp = DatabaseUtils().getPlayerSMxp(player)
         val playerSTxp = DatabaseUtils().getPlayerSTxp(player)
         val playerWDxp = DatabaseUtils().getPlayerWDxp(player)
-        val customItem = getCustomItemName(item)
-        
+        val customItem = getCustomItemName(item) ?: return
+        val giveItem = getCustomItem(customItem) ?: return
+        val customItemString = customItem.substringAfter(':')
+
 
         if (itemMeta != null) {
             if (itemMeta.hasCustomModelData() && itemMeta.customModelData == 4867) {
@@ -52,6 +55,7 @@ class InventoryClickListener : Listener { // Used for voyage system
                             event.clickedInventory?.close()
                         }
                     }
+
                     4693 -> {
                         event.isCancelled = true
                         val itemh = event.currentItem
@@ -63,20 +67,108 @@ class InventoryClickListener : Listener { // Used for voyage system
                             println("$location")
                             val compassItem = player.inventory.getItem(8)
                             val compassType = Material.COMPASS
-                            if (compassItem != null && compassItem.type == compassType ) {
+                            if (compassItem != null && compassItem.type == compassType) {
                                 player.compassTarget = location!!
                                 compassItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1)
-                                compassItem.lore = listOf("" ,"${ChatColor.YELLOW}Navigating to ${ChatColor.BLUE}${ChatColor.BOLD}$itemName")
+                                compassItem.lore = listOf(
+                                    "",
+                                    "${ChatColor.YELLOW}Navigating to ${ChatColor.BLUE}${ChatColor.BOLD}$itemName"
+                                )
                             }
                         }
                         event.clickedInventory?.close()
                     }
                 }
-                if (customItem != null) {
-                    
+                if (config.isConfigurationSection("stores.sm.$customItemString")) {
+                    val playerXpSM = DatabaseUtils().getPlayerSMxp(player)
+                    val (currentLevelSM, _) = LevelCalculate().calculateLevel(playerXpSM)
+                    val sectionSM = config.getConfigurationSection("stores.sm.$customItemString")
+                    val reqLevelSM = sectionSM?.getInt("level") ?: return
+                    if (currentLevelSM >= reqLevelSM) {
+
+                        val coins = sectionSM.getInt("price.coins")
+                        val silver = sectionSM.getInt("price.silver")
+
+                        val playerCoins = DatabaseUtils().getPlayerCoins(player)
+                        val playerSilver = DatabaseUtils().getPlayerSilver(player)
+
+                        if (playerCoins >= coins && playerSilver >= silver) {
+                            DatabaseUtils().updatePlayerCoins(player, playerCoins - coins)
+                            DatabaseUtils().updatePlayerSilver(player, playerSilver - silver)
+
+                            val inventory = player.inventory
+
+                            for (i in 0 until inventory.size) {
+                                if (inventory.getItem(i) == null || inventory.getItem(i)!!.type == Material.AIR) {
+                                    inventory.setItem(i, giveItem)
+                                    break
+                                }
+                            }
+                            event.clickedInventory?.close()
+                        }
+                    }
                 }
+                if (config.isConfigurationSection("stores.st.$customItemString")) {
+                    val playerXpST = DatabaseUtils().getPlayerSTxp(player)
+                    val (currentLevelST, _) = LevelCalculate().calculateLevel(playerXpST)
+                    val sectionST = config.getConfigurationSection("stores.st.$customItemString")
+                    val reqLevelST = sectionST?.getInt("level") ?: return
+                    if (currentLevelST >= reqLevelST) {
+
+                        val coins = sectionST.getInt("coins")
+                        val silver = sectionST.getInt("silver")
+
+                        val playerCoins = DatabaseUtils().getPlayerCoins(player)
+                        val playerSilver = DatabaseUtils().getPlayerSilver(player)
+
+                        if (playerCoins < coins && playerSilver < silver) return
+
+                        DatabaseUtils().updatePlayerCoins(player, playerCoins - coins)
+                        DatabaseUtils().updatePlayerSilver(player, playerSilver - silver)
+
+
+                        val inventory = player.inventory
+
+                        for (i in 0 until inventory.size) {
+                            if (inventory.getItem(i) == null || inventory.getItem(i)!!.type == Material.AIR) {
+                                inventory.setItem(i, giveItem)
+                                break
+                            }
+                        }
+                        event.clickedInventory?.close()
+                    }
+                }
+                if (config.isConfigurationSection("stores.wd.$customItemString")) {
+                    val playerXpWD = DatabaseUtils().getPlayerSMxp(player)
+                    val (currentLevelWD, _) = LevelCalculate().calculateLevel(playerXpWD)
+                    val sectionWD = config.getConfigurationSection("stores.wd.$customItemString")
+                    val reqLevelWD = sectionWD?.getInt("level") ?: return
+                    if (currentLevelWD >= reqLevelWD) {
+
+                        val coins = sectionWD.getInt("coins")
+                        val silver = sectionWD.getInt("silver")
+
+                        val playerCoins = DatabaseUtils().getPlayerCoins(player)
+                        val playerSilver = DatabaseUtils().getPlayerSilver(player)
+
+                        if (playerCoins < coins && playerSilver < silver) return
+
+                        DatabaseUtils().updatePlayerCoins(player, playerCoins - coins)
+                        DatabaseUtils().updatePlayerSilver(player, playerSilver - silver)
+
+                        val inventory = player.inventory
+
+                        for (i in 0 until inventory.size) {
+                            if (inventory.getItem(i) == null || inventory.getItem(i)!!.type == Material.AIR) {
+                                inventory.setItem(i, giveItem)
+                                break
+                            }
+                        }
+                        event.clickedInventory?.close()
+                    }
+                }
+                event.isCancelled = true
             }
-            event.isCancelled = true
         }
     }
 }
